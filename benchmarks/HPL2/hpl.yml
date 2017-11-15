@@ -49,12 +49,9 @@
     - name: Download pip
       get_url:
         url: https://bootstrap.pypa.io/get-pip.py
-        dest: ~/
 
     - name: Install pip
       shell: python get-pip.py
-      args:
-        chdir: ~/
       become: true
       become_user: root
       become_method: sudo
