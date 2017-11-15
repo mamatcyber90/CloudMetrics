@@ -1,3 +1,5 @@
+---
+# Azure Launch
 - name: Launch Azure image
   hosts: localhost
   connection: local
