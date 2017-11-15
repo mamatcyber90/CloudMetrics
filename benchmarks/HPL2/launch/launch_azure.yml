@@ -6,12 +6,11 @@
 
     - name: Create VM
       azure_rm_virtualmachine:
-        resource_group: myResourceGroup
-        name: myVM
+        name: "{{size}}"
         location: "{{region}}"
-        vm_size: Standard_DS1_v2
+        vm_size: "{{instance_type}}"
         admin_username: "{{ssh_user}}"
-        admin_password: "{{ssh_pw}}"
+        admin_password: "{{ssh_pass}}"
         ssh_password_enabled: true
         image:
           offer: "{{image}}"
