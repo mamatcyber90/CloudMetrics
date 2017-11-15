@@ -10,7 +10,7 @@
 
     - name: Copy HPL files
       copy:
-        src: "{{playbook_dir}}/benchmarks/HPL2/data/" # Assumes you are at the top level of the project
+        src: "{{playbook_dir}}/data/" # Assumes you are in the dir of the playbook
         dest: ~/
 
     - name: Update all packages
