@@ -1,0 +1,21 @@
+# Launch GCE Instance on Centos
+---
+- name: Launch Instance
+  gce:
+    instance_names: "{{size}}-{{lookup('pipe','date +%s')}}"
+    zone: "{{region}}"
+    machine_type: "{{instance_type}}"
+    image: centos-7
+    state: present
+    credentials_file: "{{cred_file}}"
+    service_account_email: "{{serv_acct_email}}"
+    project_id: "{{pid}}"
+    disk_size: 10
+  register: gce
+
+- name: Wait for SSH
+  wait_for:
+    host: "{{ item.public_ip }}"
+    port: 22
+    state: started
+  with_items: "{{ gce.instance_data }}"

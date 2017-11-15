@@ -1,0 +1,26 @@
+---
+# Azure facts
+# Only runs on CENT for now
+- name: set small-size facts
+  set_fact:
+    instance_type: Standard_A2m_v2
+    image: CentOS
+  when: size == "small"
+
+- name: set medium-size facts
+  set_fact:
+    instance_type: Standard_D3_v2
+    image: CentOS
+  when: size == "medium"
+
+- name: set large-size facts
+  set_fact:
+    instance_type: Standard_D4_v2
+    image: CentOS
+  when: size == "large"
+
+- name: set test-size facts
+  set_fact:
+    instance_type: Standard_A2m_v2
+    image: CentOS
+  when: size == "test"
