@@ -2,7 +2,7 @@
 # Azure Launch
 - name: Azure VM
   azure_rm_virtualmachine:
-    resource_group: {{resource_group}}
+    resource_group: "{{resource_group}}"
     name: "{{size}}"
     location: "{{region}}"
     vm_size: "{{instance_type}}"
