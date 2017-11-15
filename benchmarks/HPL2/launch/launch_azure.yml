@@ -1,20 +1,14 @@
 ---
 # Azure Launch
-- name: Launch Azure image
-  hosts: localhost
-  connection: local
-
-  tasks:
-
-    - name: Create VM
-      azure_rm_virtualmachine:
-        name: "{{size}}"
-        location: "{{region}}"
-        vm_size: "{{instance_type}}"
-        admin_username: "{{ssh_user}}"
-        admin_password: "{{ssh_pass}}"
-        ssh_password_enabled: true
-        image:
-          offer: "{{image}}"
-          version: latest
-      register: azure_vm
+- name: Azure VM
+  azure_rm_virtualmachine:
+    name: "{{size}}"
+    location: "{{region}}"
+    vm_size: "{{instance_type}}"
+    admin_username: "{{ssh_user}}"
+    admin_password: "{{ssh_pass}}"
+    ssh_password_enabled: true
+    image:
+      offer: "{{image}}"
+      version: latest
+  register: azure_vm
