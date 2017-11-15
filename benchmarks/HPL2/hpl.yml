@@ -1,5 +1,5 @@
 - name: Run HPL benchmark
-  hosts: HPL
+  hosts: {{target_host}}
 
   vars:
     ansible_ssh_user: "{{ssh_user}}" # User who created the keyfile
