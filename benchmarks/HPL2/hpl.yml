@@ -120,6 +120,7 @@
     - name: Print hostvars
       debug:
         msg: "{{hostvars}}"
+      when: foo is defined
 
     - name: terminate AWS instances
       ec2:
