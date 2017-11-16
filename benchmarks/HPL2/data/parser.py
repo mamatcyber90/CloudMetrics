@@ -97,6 +97,6 @@ responce = requests.post(ingress_url,data=prettybody, headers=headers)
 print("Responce code: {}".format(responce.status_code))
 
 with open("responce.txt", 'w') as f:
-    f.write(responce.status_code)
+    f.write(str(responce.status_code))
 
 print(prettybody)
