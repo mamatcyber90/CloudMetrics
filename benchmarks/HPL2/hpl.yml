@@ -131,7 +131,7 @@
         credentials_file: "{{ cred_file }}"
         project_id: "{{ pid }}"
         instance_names: "{{ gce.instance_names }}"
-        zone: {{region}}
+        zone: "{{region}}"
         state: absent
       tags:
         - delete
