@@ -2,7 +2,7 @@
 ---
 - name: Launch Instance
   gce:
-    instance_names: test1, test2
+    instance_names: test1,test2,test3
     zone: "{{region}}"
     machine_type: "{{instance_type}}"
     image: centos-7
