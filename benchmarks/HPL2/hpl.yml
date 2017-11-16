@@ -115,7 +115,7 @@
 
     - name: Print responce
       debug:
-        msg: Responce code: "{{res}}"
+        msg: "Responce code: {{res}}"
 
     - name: terminate AWS instances
       ec2:
