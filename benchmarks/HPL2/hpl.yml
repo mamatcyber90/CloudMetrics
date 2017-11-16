@@ -120,7 +120,7 @@
     - name: terminate AWS instances
       ec2:
         state: 'absent'
-        instance_ids: '{{ ec2.instance_ids }}'
+        instance_ids: '{{ hostvars.HPL.ec2.instance_ids }}'
       when:
         - cloud is defined
         - cloud == "AWS"
@@ -132,7 +132,7 @@
         service_account_email: "{{ serv_acct_email }}"
         credentials_file: "{{ cred_file }}"
         project_id: "{{ pid }}"
-        instance_names: "{{ gce.instance_names }}"
+        instance_names: "{{ hostvars.HPL.gce.instance_names }}"
         zone: "{{region}}"
         state: absent
       tags:
