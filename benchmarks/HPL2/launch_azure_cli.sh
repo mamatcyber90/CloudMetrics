@@ -14,4 +14,4 @@ az vm create \
 az vm open-port \
     --name $1 \
     --port 22 \
-    --resource-group $2
+    --resource-group $2 >> port_open.out
