@@ -6,7 +6,7 @@
     wait: true
     region: "{{ region }}"
     keypair: "{{key}}"
-    count: 1
+    count: "{{count}}"
   register: ec2
 
 - name: Wait for SSH to open

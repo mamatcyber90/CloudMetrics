@@ -117,11 +117,16 @@
       debug:
         msg: "Responce code: {{res.stdout}}"
 
+    - name: Print hostvars
+      debug:
+        msg: "{{hostvars}}"
+
     - name: terminate AWS instances
       ec2:
         state: 'absent'
-        instance_ids: '{{ hostvars.HPL.ec2.instance_ids }}'
+        instance_ids: '{{ hostvars.localhost.ec2.instance_ids }}'
       when:
+        - foo is defined
         - cloud is defined
         - cloud == "AWS"
         - res is defined
@@ -138,6 +143,7 @@
       tags:
         - delete
       when:
+        - foo is defined
         - cloud is defined
         - cloud == "GCE"
         - res is defined

@@ -11,6 +11,7 @@
     service_account_email: "{{serv_acct_email}}"
     project_id: "{{pid}}"
     disk_size: 10
+    num_instances: "{{count}}"
   register: gce
 
 - name: Wait for SSH
