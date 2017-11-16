@@ -94,6 +94,9 @@ headers = {"X-UG-Signature":signature,
            "Content-Type":"application/json"}
 
 responce = requests.post(ingress_url,data=prettybody, headers=headers)
-print(responce.status_code)
+print("Responce code: {}".format(responce.status_code))
+
+with open("responce.txt", 'w') as f:
+    f.write(responce.status_code)
 
 print(prettybody)
