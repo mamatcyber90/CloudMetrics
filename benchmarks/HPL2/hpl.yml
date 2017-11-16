@@ -19,7 +19,7 @@
         state: latest
       become: true
       become_user: root
-      become_method: sudo
+      become_method: su
 
 
     # make only for Cent-like systems
@@ -30,7 +30,7 @@
       when: ansible_os_family == "RedHat"
       become: true
       become_user: root
-      become_method: sudo
+      become_method: su
 
     - name: Install HPL Dependencies
       package:
@@ -44,7 +44,7 @@
         - nmon # not required by HPL, but useful for monitering the system
       become: true
       become_user: root
-      become_method: sudo
+      become_method: su
 
     - name: Download pip
       get_url:
@@ -55,7 +55,7 @@
       shell: python get-pip.py
       become: true
       become_user: root
-      become_method: sudo
+      become_method: su
 
     - name: Install python packages
       shell: pip install "{{ item }}"
@@ -64,7 +64,7 @@
         - requests
       become: true
       become_user: root
-      become_method: sudo
+      become_method: su
 
     - name: Download and extract HPL
       unarchive:
