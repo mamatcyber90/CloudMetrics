@@ -115,7 +115,7 @@
 
     - name: Print responce
       debug:
-        msg: "Responce code: {{res}}"
+        msg: "Responce code: {{res.stdout}}"
 
     - name: terminate AWS instances
       ec2:
@@ -125,7 +125,7 @@
         - cloud is defined
         - cloud == "AWS"
         - res is defined
-        - res == "200"
+        - res.stdout == "200"
 
     - name: delete GCE instances
       gce:
@@ -141,4 +141,4 @@
         - cloud is defined
         - cloud == "GCE"
         - res is defined
-        - res == "200"
+        - res.stdout == "200"
