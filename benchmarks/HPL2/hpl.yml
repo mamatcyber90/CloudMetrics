@@ -122,7 +122,9 @@
         state: 'absent'
         instance_ids: '{{ ec2.instance_ids }}'
       when:
+        - cloud is defined
         - cloud == "AWS"
+        - res is defined
         - res == "200"
 
     - name: delete GCE instances
@@ -136,5 +138,7 @@
       tags:
         - delete
       when:
+        - cloud is defined
         - cloud == "GCE"
+        - res is defined
         - res == "200"
