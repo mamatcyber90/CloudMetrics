@@ -2,7 +2,7 @@
 ---
 - name: Launch Instance
   gce:
-    instance_names: "{{size}}-{{lookup('pipe','date +%s')}}","{{size}}-{{lookup('pipe','date +%s')}}"
+    instance_names: {{size}}-{{lookup('pipe','date +%s')}},{{size}}-{{lookup('pipe','date +%s')}}
     zone: "{{region}}"
     machine_type: "{{instance_type}}"
     image: centos-7
