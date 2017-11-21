@@ -1,0 +1,7 @@
+---
+# for GCE Runs
+# Only runs on CENT for now
+- name: Set CentOS-7 image
+  set_fact:
+    gce_image: centos-7 # default centos7
+  when: os == "centos7"

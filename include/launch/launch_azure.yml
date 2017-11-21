@@ -1,0 +1,55 @@
+---
+# Azure Launch
+
+- name: Set temp Azure VM name
+  set_fact:
+    azure_vm_name: "{{size}}-{{lookup('pipe','date +%s')}}"
+
+- name: Launch Azure Instance
+  azure_rm_virtualmachine:
+    resource_group: "{{resource_group}}"
+    name: "{{azure_vm_name}}"
+    location: "{{region}}"
+    vm_size: "{{instance_type}}"
+    admin_username: "{{ssh_user}}"
+    ssh_public_keys:
+      - path: /home/{{ssh_user}}/.ssh/authorized_keys
+        key_data: "{{ssh_public_key.stdout}}"
+    ssh_password_enabled: false
+    image:
+      offer: "{{azure_image}}"
+      publisher: "{{azure_publisher}}"
+      sku: "{{azure_sku}}"
+      version: "{{azure_version}}"
+  register: azure_vm
+
+## Adding IP to IP list ##
+
+# in order to keep things legible
+- name: set temp azure IP
+  set_fact:
+    temp_azure_ip: "{{azure_vm.properties.networkProfile.networkInterfaces.0.properties.ipConfigurations.0.properties.publicIPAddress.properties.ipAddress}}"
+
+- name: add azure IP to IP lists
+  set_fact:
+    azure_ips: "{{azure_ips + ['{{temp_azure_ip}}'] }}"
+  when: azure_ips is defined
+
+- name: Create Azure IP list if not created
+  set_fact:
+    azure_ips:
+      - "{{temp_azure_ip}}"
+  when: azure_ips is not defined
+
+## Adding Azure name to list to allow deletion later ##
+
+- name: Add name to azure names list
+  set_fact:
+    azure_vm_names: "{{azure_vm_names + ['{{azure_vm_name}}'] }}"
+  when: azure_vm_names is defined
+
+- name: Create Azure name list if not created
+  set_fact:
+    azure_vm_names:
+      - "{{azure_vm_name}}"
+  when: azure_vm_names is not defined

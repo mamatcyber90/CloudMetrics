@@ -1,0 +1,103 @@
+---
+
+# Runs HPL benchmark
+
+- name: Copy HPL files
+  copy:
+    src: "{{playbook_dir}}/benchmarks/HPL3/data/" # Assumes you are in the dir of the playbook
+    dest: ~/
+
+- name: Update all packages
+  package:
+    name: "*"
+    state: latest
+  become: true
+  when: foo is defined
+
+
+# make only for Cent-like systems
+- name: Install EPEL repo RHEL/CentOS/Fedora
+  package:
+    name: epel-release
+    state: latest
+  when: ansible_os_family == "RedHat"
+  become: true
+
+- name: Install HPL Dependencies
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - gcc-gfortran
+    - atlas
+    - openmpi
+    - openmpi-devel
+    - nmon # not required by HPL, but useful for monitering the system
+  become: true
+
+- name: Download pip
+  get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: ~/
+
+- name: Install pip
+  shell: python get-pip.py
+  become: true
+
+- name: Install python packages
+  shell: pip install "{{ item }}"
+  with_items:
+    - pandas
+    - requests
+  become: true
+  
+- name: Download and extract HPL
+  unarchive:
+    src: http://www.netlib.org/benchmark/hpl/hpl-2.2.tar.gz
+    dest: ~/
+    remote_src: true
+
+- name: Copy makefile
+  copy:
+    src: ~/Make.x86_64
+    dest: ~/hpl-2.2/
+    remote_src: true
+
+- name: Compile HPL
+  shell: make arch=x86_64
+  args:
+    chdir: ~/hpl-2.2/
+
+- name: Set ENDTIME
+  set_fact:
+    ENDTIME: "{{ lookup('pipe','date +%s')|int + duration|int }}"
+
+# add binaries to /usr/bin ??
+
+- name: set num processors
+  set_fact:
+    p: "{{ ansible_processor_vcpus }}"
+
+# Run HPL until the duration has elapsed
+- name: Run HPL Repeatedly
+  shell: /usr/lib64/openmpi/bin/mpirun -np {{p}} ~/hpl-2.2/bin/x86_64/xhpl >> results.txt
+  args:
+    chdir: ~/{{size}}
+  until: lookup('pipe','date +%s')|int > ENDTIME|int
+  delay: 0
+  retries: 10000
+
+  # Post parse and post the results to a server
+- name: Run Python results Parser
+  shell: python ~/parser.py "{{benchmark}}" "{{cloud}}" "{{hostvars['localhost'].instance_type}}" "{{hostvars['localhost'].region}}" "{{secret_key}}" "{{ingress_url}}" "{{os}}" >> parser_output.txt
+  args:
+    chdir: ~/{{size}}
+  when: ingress_url != "127.0.0.1"
+
+- name: get responce value
+  shell: cat ~/{{size}}/responce.txt
+  register: res
+
+- name: Print responce
+  debug:
+    msg: "Responce code: {{res.stdout}}"

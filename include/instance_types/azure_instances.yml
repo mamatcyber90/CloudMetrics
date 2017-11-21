@@ -1,0 +1,22 @@
+---
+# Azure Instances
+# Sets instance types based upon small/medium/large
+- name: Set Azure small
+  set_fact:
+    instance_type: Standard_D2s_v3
+  when: size == "small"
+
+- name: Set Azure medium
+  set_fact:
+    instance_type: Standard_D4s_v3
+  when: size == "medium"
+
+- name: Set Azure large
+  set_fact:
+    instance_type: Standard_D8s_v3
+  when: size == "large"
+
+- name: Set Azure tiny
+  set_fact:
+    instance_type: Standard_DS1
+  when: size == "tiny"

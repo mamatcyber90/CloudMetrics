@@ -1,0 +1,7 @@
+---
+# for AWS Runs
+# Only runs on CENT for now
+- name: Set CentOS-7 image
+  set_fact:
+    aws_image: ami-e535c59d # default centos7
+  when: os == "centos7"

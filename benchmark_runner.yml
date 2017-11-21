@@ -1,0 +1,14 @@
+- name: Run benchmark
+  hosts: "{{benchmark}}"
+
+  # Gets these variables from the localhost group
+
+  vars:
+    ansible_ssh_user: "{{ ssh_user }}"
+    ansible_ssh_private_key_file: "{{ssh_key_dir}}"
+
+  tasks:
+
+    - name: Run Benchmark
+      include_tasks: "{{playbook_dir}}/benchmarks/HPL3/hpl.yml"
+      ignore_errors: yes

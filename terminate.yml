@@ -1,0 +1,41 @@
+- name: Terminate Cloud instances
+  hosts: localhost
+  connection: local
+
+  # Since we are executing on localhost, the vars
+  # we created in start.yml should still be active
+  # As it was started all as one playbook
+
+  tasks:
+
+    - name: terminate aws instances
+      ec2:
+        state: 'absent'
+        region: "{{ region }}"
+        instance_ids: '{{ ec2.instance_ids }}'
+      when:
+        - cloud is defined
+        - cloud == "aws"
+
+    - name: Terminate GCE instances
+      gce:
+        name: "{{item.name}}"
+        zone: "{{region}}"
+        credentials_file: "{{cred_file}}"
+        service_account_email: "{{serv_acct_email}}"
+        project_id: "{{pid}}"
+        state: absent
+      with_items: "{{gce.instance_data}}"
+      when:
+        - cloud is defined
+        - cloud == "gce"
+
+    - name: remove vm and all resources except public ips
+      azure_rm_virtualmachine:
+        resource_group: "{{resource_group}}"
+        name: "{{ item }}"
+        state: absent
+      with_items: "{{azure_vm_names}}"
+      when:
+        - cloud is defined
+        - cloud == "azure"

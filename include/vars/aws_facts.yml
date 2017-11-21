@@ -1,0 +1,35 @@
+---
+# for AWS Runs
+# Only runs on CENT for now
+- name: set small-size facts
+  set_fact:
+    instance_type: m4.large
+    image: ami-e535c59d
+  when: size == "small"
+  register: instance_type
+  register: image
+
+
+- name: set medium-size facts
+  set_fact:
+    instance_type: m4.xlarge
+    image: ami-e535c59d
+  when: size == "medium"
+  register: instance_type
+  register: image
+
+- name: set large-size facts
+  set_fact:
+    instance_type: m4.2xlarge
+    image: ami-e535c59d
+  when: size == "large"
+  register: instance_type
+  register: image
+
+- name: set test-size facts
+  set_fact:
+    instance_type: t2.nano
+    image: ami-e535c59d
+  when: size == "test"
+  register: instance_type
+  register: image

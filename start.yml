@@ -1,0 +1,114 @@
+- name: Provision Cloud Instance and Run HPL
+  hosts: localhost
+  connection: local
+
+  vars:
+
+    # Variables used by all clouds
+    cloud: AWS
+    region: us-west-2
+    size: small # size will determine image and instance_type, which is cloud specific
+    duration: 3600 # One hour
+    count: 1 # number of VMs
+
+    # AWS Specific
+    key: my_key
+
+    # Google Cloud Specific vars
+    pid: 1234
+    serv_acct_email: 987-compute@compute@developer.gserviceaccount.com
+    cred_file: ~/my_creds.json
+
+    # Azure Specific vars
+    azure_sub_id: 123-a23-32
+
+
+    # Metadata for the parser
+    test_type: HPL
+    secret_key: super_secret # If passed in via extra-vars, it may not contain spaces
+    ingress_url: 127.0.0.1
+
+    # used to authenticate each of the different clouds
+    ssh_user: centos
+    ssh_pass: foobar
+    ssh_key_dir: ./.ssh/foo.pem
+
+  tasks:
+
+    #
+    - name: get public ssh key
+      shell: cat {{ssh_public_dir}}
+      register: ssh_public_key
+      when: ssh_public_dir is defined
+
+    # get cloud-specific OS vars
+    # cannot be based in because Azure handle's images differently
+    - name: Set Cloud image
+      include_tasks: "{{playbook_dir}}/include/os/{{cloud}}_os.yml"
+
+    # Get cloud-specific instance type
+    - name: Set Cloud Instance type
+      include_tasks: "{{playbook_dir}}/include/instance_types/{{cloud}}_instances.yml"
+      when: instance_type is not defined
+
+    # Used by Azure in order to sequentially spawn multiple VMs
+    - name: Get random string of chars of length COUNT
+      shell: openssl rand -hex 50 | head -c {{count}}
+      register: output
+      when: cloud == "azure"
+
+    # turns that string into a proper YAML list
+    - name: get list of chars
+      set_fact:
+        nums: "{{output.stdout | list}}"
+      when: cloud == "azure"
+
+    # Launches the instances
+    - name: Launch Non-Azure Cloud Instance
+      include_tasks: "{{playbook_dir}}/include/launch/launch_{{cloud}}.yml"
+      when: cloud != 'azure'
+
+    # Because Azure's launch pattern is different, it must get it's own task
+    - name: Launch Azure Instance
+      include_tasks: "{{playbook_dir}}/include/launch/launch_{{cloud}}.yml"
+      when: cloud == "azure"
+      with_items: "{{nums}}"
+
+    # It isnt done with every vm to save time while the others are booting
+    - name: Wait for last Azure VM to start
+      wait_for:
+        host: "{{ azure_vm.properties.networkProfile.networkInterfaces.0.properties.ipConfigurations.0.properties.publicIPAddress.properties.ipAddress}}"
+        port: 22
+        state: started
+      when: cloud == "azure"
+
+    # Add new entries to in-memory host file for subsequent plays
+    - name: Add AWS ips to benchmark inventory
+      add_host:
+        name: "{{ item.public_ip }}"
+        groups: "{{benchmark}}"
+      with_items: "{{ ec2.instances }}"
+      when: cloud == "aws"
+
+    - name: Add GCE ips to benchmark inventory
+      add_host:
+        name: "{{ item.public_ip }}"
+        groups: "{{benchmark}}"
+      with_items: "{{ gce.instance_data }}"
+      when: cloud == "gce"
+
+      # Had to create custom list in case there is more than one IP
+    - name: Add Azure ips to benchmark inventory
+      add_host:
+        name: "{{ item }}"
+        groups: "{{benchmark}}"
+      with_items: "{{ azure_ips }}"
+      when: cloud == "azure"
+
+
+
+# Run Benchmark
+- import_playbook: benchmark_runner.yml
+
+# terminate the instances
+- import_playbook: terminate.yml

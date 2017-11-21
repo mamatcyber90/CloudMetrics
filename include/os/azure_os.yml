@@ -1,0 +1,12 @@
+---
+# for Azyre Runs
+# Only runs on CENT for now
+
+# Images must be from the Azure Marketplace
+- name: Set CentOS-7 image
+  set_fact:
+    azure_image: CentOS # default centos7
+    azure_publisher: OpenLogic
+    azure_sku: '7.1'
+    azure_version: latest
+  when: os == "centos7"

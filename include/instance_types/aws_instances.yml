@@ -1,0 +1,22 @@
+---
+# AWS Instances
+# Sets instance types based upon small/medium/large
+- name: Set AWS small
+  set_fact:
+    instance_type: m4.large
+  when: size == "small"
+
+- name: Set AWS medium
+  set_fact:
+    instance_type: m4.xlarge
+  when: size == "medium"
+
+- name: Set AWS large
+  set_fact:
+    instance_type: m4.2xlarge
+  when: size == "large"
+
+- name: Set AWS tiny
+  set_fact:
+    instance_type: t2.nano
+  when: size == "tiny"
