@@ -1,7 +1,16 @@
 ---
 # for AWS Runs
 # Only runs on CENT for now
-- name: Set CentOS-7 image
+- name: Set CentOS-7 US-WEST-2 image
   set_fact:
     aws_image: ami-e535c59d # default centos7
-  when: os == "centos7"
+  when:
+    - os == "centos7"
+    - region == "us-west-2"
+
+- name: Set CentOS-7 US-EAST-2 image
+  set_fact:
+    aws_image: ami-d61133b3 # default centos7
+  when:
+    - os == "centos7"
+    - region == "us-east-2"
