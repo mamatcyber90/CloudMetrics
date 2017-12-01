@@ -22,3 +22,10 @@
     name:  '{{ item }}'
     state: absent
   with_items: "{{azure_vm_names}}"
+
+- name: remove azure security group
+  azure_rm_securitygroup:
+    resource_group: "{{resource_group}}"
+    name: '{{item}}'
+    state: absent
+  with_items: "{{azure_vm_names}}"
