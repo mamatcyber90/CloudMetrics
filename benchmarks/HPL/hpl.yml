@@ -4,7 +4,7 @@
 
 - name: Copy HPL files
   copy:
-    src: "{{playbook_dir}}/benchmarks/HPL3/data/" # Assumes you are in the dir of the playbook
+    src: "{{playbook_dir}}/benchmarks/HPL/data/" # Assumes you are in the dir of the playbook
     dest: ~/
 
 - name: Update all packages
@@ -12,7 +12,7 @@
     name: "*"
     state: latest
   become: true
-  when: foo is defined
+  when: update is defined
 
 
 # make only for Cent-like systems
@@ -50,7 +50,7 @@
     - pandas
     - requests
   become: true
-  
+
 - name: Download and extract HPL
   unarchive:
     src: http://www.netlib.org/benchmark/hpl/hpl-2.2.tar.gz

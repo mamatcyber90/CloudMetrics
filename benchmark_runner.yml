@@ -9,6 +9,7 @@
 
   tasks:
 
-    - name: Run Benchmark
-      include_tasks: "{{playbook_dir}}/benchmarks/HPL3/hpl.yml"
+    - name: Run High Performance Linpack (HPL)
+      include_tasks: "{{playbook_dir}}/benchmarks/HPL/hpl.yml"
       ignore_errors: yes
+      when: benchmark == "hpl"
