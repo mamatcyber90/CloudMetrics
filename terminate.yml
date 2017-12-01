@@ -30,10 +30,24 @@
         - cloud is defined
         - cloud == "gce"
 
-    - name: remove vm and all resources except public ips
+    - name: Delete azure vm and resources
       azure_rm_virtualmachine:
         resource_group: "{{resource_group}}"
         name: "{{ item }}"
+        state: absent
+        remove_on_absent:
+          - network_interfaces
+          - virtual_storage
+          - public_ips
+      with_items: "{{azure_vm_names}}"
+      when:
+        - cloud is defined
+        - cloud == "azure"
+
+    - name: Remove azure storage account
+      azure_rm_storageaccount:
+        resource_group: '{{ resource_group }}'
+        name:  '{{ item }}'
         state: absent
       with_items: "{{azure_vm_names}}"
       when:
