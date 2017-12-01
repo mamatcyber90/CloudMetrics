@@ -1,0 +1,8 @@
+---
+# actions to terminate aws instances
+
+- name: terminate aws instances
+  ec2:
+    state: 'absent'
+    region: "{{ region }}"
+    instance_ids: '{{ ec2.instance_ids }}'

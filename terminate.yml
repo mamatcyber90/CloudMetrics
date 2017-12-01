@@ -8,48 +8,20 @@
 
   tasks:
 
-    - name: terminate aws instances
-      ec2:
-        state: 'absent'
-        region: "{{ region }}"
-        instance_ids: '{{ ec2.instance_ids }}'
+    - name: Clean up aws
+      include_tasks: "{{playbook_dir}}/terminate/terminate_aws.yml"
       when:
         - cloud is defined
         - cloud == "aws"
 
-    - name: Terminate GCE instances
-      gce:
-        name: "{{item.name}}"
-        zone: "{{region}}"
-        credentials_file: "{{cred_file}}"
-        service_account_email: "{{serv_acct_email}}"
-        project_id: "{{pid}}"
-        state: absent
-      with_items: "{{gce.instance_data}}"
+    - name: Clean up gce
+      include_tasks: "{{playbook_dir}}/terminate/terminate_gce.yml"
       when:
         - cloud is defined
         - cloud == "gce"
 
-    - name: Delete azure vm and resources
-      azure_rm_virtualmachine:
-        resource_group: "{{resource_group}}"
-        name: "{{ item }}"
-        state: absent
-        remove_on_absent:
-          - network_interfaces
-          - virtual_storage
-          - public_ips
-      with_items: "{{azure_vm_names}}"
-      when:
-        - cloud is defined
-        - cloud == "azure"
-
-    - name: Remove azure storage account
-      azure_rm_storageaccount:
-        resource_group: '{{ resource_group }}'
-        name:  '{{ item }}'
-        state: absent
-      with_items: "{{azure_vm_names}}"
+    - name: Clean up Azure
+      include_tasks: "{{playbook_dir}}/terminate/terminate_azure.yml"
       when:
         - cloud is defined
         - cloud == "azure"

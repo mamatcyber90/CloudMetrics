@@ -1,0 +1,13 @@
+---
+
+# tasks necessary to terminate gce resources
+
+- name: Terminate GCE instances
+  gce:
+    name: "{{item.name}}"
+    zone: "{{region}}"
+    credentials_file: "{{cred_file}}"
+    service_account_email: "{{serv_acct_email}}"
+    project_id: "{{pid}}"
+    state: absent
+  with_items: "{{gce.instance_data}}"
