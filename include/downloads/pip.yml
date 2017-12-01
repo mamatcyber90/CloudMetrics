@@ -1,0 +1,18 @@
+---
+# download pip and its packages
+
+- name: Download pip
+  get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: ~/
+
+- name: Install pip
+  shell: python get-pip.py
+  become: true
+
+- name: Install python packages
+  shell: pip install "{{ item }}"
+  with_items:
+    - pandas
+    - requests
+  become: true

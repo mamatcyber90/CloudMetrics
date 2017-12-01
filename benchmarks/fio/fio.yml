@@ -1,0 +1,48 @@
+---
+# tasks to run the fio benchmark
+
+- name: copy fio data
+  copy:
+    src: "{{playbook_dir}}/benchmarks/fio/data/" # Assumes you are in the dir of the playbook
+    dest: ~/
+
+- name: Update all packages
+  package:
+    name: "*"
+    state: latest
+  become: true
+  when: update is defined
+
+# make only for Cent-like systems
+- name: Install EPEL repo RHEL/CentOS/Fedora
+  package:
+    name: epel-release
+    state: latest
+  when: ansible_os_family == "RedHat"
+  become: true
+
+- name: Install pip and its packages
+  include_tasks: "{{playbook_dir}}/include/downloads/pip.yml"
+
+- name: Download fio
+  package:
+    name: fio
+    state: latest
+  become: true
+
+- name: Run fio job
+  shell: fio ~/fiojobs/{{jobfile}} --runtime={{duration}} --output=results.txt
+
+- name: Parse Fio Result file
+  shell: python ~/parser.py "{{benchmark}}" "{{cloud}}" "{{hostvars['localhost'].instance_type}}" "{{hostvars['localhost'].region}}" "{{secret_key}}" "{{ingress_url}}" "{{os}}" >> parser_output.txt
+  when: ingress_url != "127.0.0.1"
+
+- name: get responce value
+  shell: cat ~/responce.txt
+  register: res
+
+- name: Print responce
+  debug:
+    msg: "Responce code: {{res.stdout}}"
+
+  
