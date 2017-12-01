@@ -9,19 +9,19 @@
   tasks:
 
     - name: Clean up aws
-      include_tasks: "{{playbook_dir}}/terminate/terminate_aws.yml"
+      include_tasks: "{{playbook_dir}}/include/terminate/terminate_aws.yml"
       when:
         - cloud is defined
         - cloud == "aws"
 
     - name: Clean up gce
-      include_tasks: "{{playbook_dir}}/terminate/terminate_gce.yml"
+      include_tasks: "{{playbook_dir}}/include/terminate/terminate_gce.yml"
       when:
         - cloud is defined
         - cloud == "gce"
 
     - name: Clean up Azure
-      include_tasks: "{{playbook_dir}}/terminate/terminate_azure.yml"
+      include_tasks: "{{playbook_dir}}/include/terminate/terminate_azure.yml"
       when:
         - cloud is defined
         - cloud == "azure"
