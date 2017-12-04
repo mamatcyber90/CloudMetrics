@@ -12,13 +12,11 @@
     tags:
         testing: "{{benchmark}}"
         group: CloudWeatherReport
-  when: ResGroup_is_set is not defined
 
-# used to prevent making the group multiple times when launching multiple instances
-- name: Create resource group flag
-  set_fact:
-    ResGroup_is_set: true
-  when: ResGroup_is_set is not defined
+- name: create virtual network
+  azure_rm_virtualnetwork:
+    name: "{{azure_vm_name}}"-Network
+    resource_group: "{{azure_vm_name}}"
 
 - name: Launch Azure Instance
   azure_rm_virtualmachine:
