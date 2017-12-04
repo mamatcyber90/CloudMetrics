@@ -17,6 +17,9 @@
   azure_rm_virtualnetwork:
     name: "{{azure_vm_name}}-Network"
     resource_group: "{{azure_vm_name}}"
+    address_prefixes_cidr:
+        - "10.1.0.0/16"
+        - "172.100.0.0/16"
 
 - name: Launch Azure Instance
   azure_rm_virtualmachine:
