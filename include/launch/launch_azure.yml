@@ -55,7 +55,7 @@
 
 - name: add azure IP to IP lists
   set_fact:
-    azure_ips: "{{azure_ips + ['{{temp_azure_ip}}'] }}"
+    azure_ips: "{{azure_ips}} + [ '{{ temp_azure_ip }}' ]"
   when: azure_ips is defined
 
 - name: Create Azure IP list if not created
@@ -68,7 +68,7 @@
 
 - name: Add name to azure names list
   set_fact:
-    azure_vm_names: "{{azure_vm_names + ['{{azure_vm_name}}'] }}"
+    azure_vm_names: "{{azure_vm_names}} + [ '{{azure_vm_name}}' ]"
   when: azure_vm_names is defined
 
 - name: Create Azure name list if not created
