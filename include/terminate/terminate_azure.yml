@@ -4,7 +4,7 @@
 
 - name: Delete azure vm and resources
   azure_rm_virtualmachine:
-    resource_group: "{{resource_group}}"
+    resource_group: '{{azure_vm_name}}'
     name: "{{ item }}"
     state: absent
     remove_on_absent:
@@ -18,19 +18,19 @@
 
 - name: Remove azure storage account
   azure_rm_storageaccount:
-    resource_group: '{{ resource_group }}'
+    resource_group: '{{azure_vm_name}}'
     name:  '{{ item }}'
     state: absent
   with_items: "{{azure_vm_names}}"
 
 - name: remove azure security group
   azure_rm_securitygroup:
-    resource_group: "{{resource_group}}"
+    resource_group: '{{azure_vm_name}}'
     name: '{{item}}'
     state: absent
   with_items: "{{azure_vm_names}}"
 
 - name: Remove Temp Resource group
   azure_rm_resourcegroup:
-    name: "{{resource_group}}"
+    name: '{{azure_vm_name}}'
     state: absent
