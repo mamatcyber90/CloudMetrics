@@ -1,6 +1,6 @@
 ---
 # actions to terminate aws instances
-
+# also deletes volumes
 - name: terminate aws instances
   ec2:
     state: 'absent'
