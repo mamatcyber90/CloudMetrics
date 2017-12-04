@@ -29,3 +29,8 @@
     name: '{{item}}'
     state: absent
   with_items: "{{azure_vm_names}}"
+
+- name: Remove Temp Resource group
+  azure_rm_resourcegroup:
+    name: "{{resource_group}}"
+    state: absent

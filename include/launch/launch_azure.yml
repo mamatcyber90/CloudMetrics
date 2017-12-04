@@ -5,9 +5,24 @@
   set_fact:
     azure_vm_name: "{{size}}-{{lookup('pipe','date +%s')}}"
 
+- name: Create Temp resource_group
+  azure_rm_resourcegroup:
+    name: "{{azure_vm_name}}"
+    location: "{{region}}"
+    tags:
+        testing: "{{benchmark}}"
+        group: CloudWeatherReport
+  when: ResGroup_is_set is defined
+
+# used to prevent making the group multiple times when launching multiple instances
+- name: Create resource group flag
+  set_fact:
+    ResGroup_is_set: true
+  when: ResGroup_is_set is not defined
+
 - name: Launch Azure Instance
   azure_rm_virtualmachine:
-    resource_group: "{{resource_group}}"
+    resource_group: "{{azure_vm_name}}"
     name: "{{azure_vm_name}}"
     location: "{{region}}"
     vm_size: "{{instance_type}}"
