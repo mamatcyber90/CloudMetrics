@@ -1,36 +1,12 @@
 ---
 
 # clean up azure resources
-
-- name: Delete azure vm and resources
-  azure_rm_virtualmachine:
-    resource_group: '{{azure_vm_name}}'
-    name: "{{ item }}"
-    state: absent
-    remove_on_absent:
-      - network_interfaces
-      - virtual_storage
-      - public_ips
-  with_items: "{{azure_vm_names}}"
-  when:
-    - cloud is defined
-    - cloud == "azure"
-
-- name: Remove azure storage account
-  azure_rm_storageaccount:
-    resource_group: '{{azure_vm_name}}'
-    name:  '{{ item }}'
-    state: absent
-  with_items: "{{azure_vm_names}}"
-
-- name: remove azure security group
-  azure_rm_securitygroup:
-    resource_group: '{{azure_vm_name}}'
-    name: '{{item}}'
-    state: absent
-  with_items: "{{azure_vm_names}}"
+# each VM has it's own resource group and associated resources
+# even if mutliple vms were launched as part of the same test
 
 - name: Remove Temp Resource group
   azure_rm_resourcegroup:
-    name: '{{azure_vm_name}}'
+    name: '{{item}}'
     state: absent
+    force: true
+  with_items: "{{azure_vm_names}}"
