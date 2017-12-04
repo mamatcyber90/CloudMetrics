@@ -15,7 +15,7 @@
 
 - name: create virtual network
   azure_rm_virtualnetwork:
-    name: "{{azure_vm_name}}"-Network
+    name: {{azure_vm_name}}-Network
     resource_group: "{{azure_vm_name}}"
 
 - name: Launch Azure Instance
