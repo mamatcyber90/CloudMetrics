@@ -5,11 +5,11 @@
   shell: lsblk -r >> 1
 
 - name: Add AWS disk
-  include_tasks: "{{playbook_dir}}/benchmarks/fio/include/add_disks/add_disk_aws.yml"
+  include_tasks: "{{playbook_dir}}/benchmarks/fio/include/add_disks/aws.yml"
   when: cloud == "aws"
 
 - name: Add GCE disk
-  include_tasks: "{{playbook_dir}}/benchmarks/fio/include/add_disks/add_disk_gce.yml"
+  include_tasks: "{{playbook_dir}}/benchmarks/fio/include/add_disks/gce.yml"
   when: cloud == "gce"
 
 - name: Add Azure disk
