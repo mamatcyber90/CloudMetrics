@@ -66,6 +66,13 @@
 - name: Run fio job
   shell: fio ~/fiojobs/{{jobfile}} --runtime={{duration}} --filename={{FioDisk}} --output=results.txt
   become: true
+  method: sudo
+
+- shell: cat results.txt
+  register: r
+
+- debug:
+    var: r.out
 
 - name: Parse Fio Result file
   shell: python ~/parser.py "{{benchmark}}" "{{cloud}}" "{{hostvars['localhost'].instance_type}}" "{{hostvars['localhost'].region}}" "{{secret_key}}" "{{ingress_url}}" "{{os}}" >> parser_output.txt
