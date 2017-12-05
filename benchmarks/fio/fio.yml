@@ -65,8 +65,7 @@
 
 - name: Run fio job
   shell: fio ~/fiojobs/{{jobfile}} --runtime={{duration}} --filename={{FioDisk}} --output=results.txt
-  become: true
-  method: sudo
+  become_method: sudo
 
 - shell: cat results.txt
   register: r

@@ -8,5 +8,4 @@
 
 - name: Precondition SSD | Fill drive with random Data
   shell: fio ~/fiojobs/precondition.fio --runtime=10 --filename={{FioDisk}}
-  become: true
-  method: sudo
+  become_method: sudo

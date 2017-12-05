@@ -6,4 +6,4 @@
 # will be deleted at the end of the script, because it deletes the whole resource group
 - name: create and attach new Azure disk
   local_action: shell="az vm disk attach -g {{item}} --vm-name {{item}} --disk FioDisk --new --size-gb 10"
-  with_items: "{{azure_vm_name}}"
+  with_items: "{{hostvars['localhost'].azure_vm_names}}"
