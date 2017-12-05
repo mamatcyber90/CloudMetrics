@@ -8,5 +8,6 @@
                   zone="{{region}}"
                   instance_name="{{item.name}}"
                   disk_type=pd-ssd
+                  mode=READ_WRITE
                   delete_on_termination=true
   with_items: "{{hostvars['localhost'].gce.instance_data}}"
