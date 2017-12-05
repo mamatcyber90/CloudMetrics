@@ -13,3 +13,8 @@
       include_tasks: "{{playbook_dir}}/benchmarks/HPL/hpl.yml"
       ignore_errors: yes
       when: benchmark == "hpl"
+
+    - name: Run Disk Benchmarker (Fio)
+      include_tasks: "{{playbook_dir}}/benchmarks/fio/fio.yml"
+      ignore_errors: yes
+      when: benchmark == "fio"
