@@ -105,6 +105,15 @@
       with_items: "{{ azure_ips }}"
       when: cloud == "azure"
 
+    - name: echo benchmark
+      debug:
+        var: benchmark
+
+    - name: echo ip
+      debug:
+        var: "{{ item.public_ip }}"
+      with_items: "{{ ec2.instances }}"
+      when: cloud == "aws"
 
 
 # Run Benchmark
