@@ -1,0 +1,9 @@
+---
+
+# add aws gce
+
+- name: Create and attach seperate GCE disk
+  local_action: gce_pd
+                  zone="{{region}}"
+                  disk_type=pd-ssd
+                  delete_on_termination=true

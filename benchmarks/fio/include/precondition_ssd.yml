@@ -1,0 +1,11 @@
+---
+
+# precondition SSD
+# Adapted from https://github.com/intel/fiovisualizer/blob/master/Workloads/Precondition/SSD%20precondition.txt
+
+- name: Precondition SSD | Fill drive with sequential data
+  shell: dd if=/dev/zero bs=1024k of={{FioDisk}}
+
+- name: Precondition SSD | Fill drive with random Data
+  shell: fio ~/fiojobs/precondition.fio --runtime=10 --filename={{FioDisk}}
+  become: true

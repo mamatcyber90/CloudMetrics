@@ -1,6 +1,33 @@
 ---
 # tasks to run the fio benchmark
 
+- name: get current block devices
+  shell: lsblk -r >> 1
+
+- name: Add AWS disk
+  include_tasks: "{{playbook_dir}}/benchmarks/fio/include/add_disks/add_disk_aws.yml"
+  when: cloud == "aws"
+
+- name: Add GCE disk
+  include_tasks: "{{playbook_dir}}/benchmarks/fio/include/add_disks/add_disk_gce.yml"
+  when: cloud == "gce"
+
+- name: Add Azure disk
+  include_tasks: "{{playbook_dir}}/benchmarks/fio/include/add_disks/azure.yml"
+  when: cloud == "azure"
+
+- name: set get updated block devices
+  shell: lsblk -r >> 2
+
+# or should that be part?
+- name: Get new block device prefix
+  shell: diff 1 2 | grep disk | cut -d " " -f 2
+  register: prefix
+
+- name: Set block device path
+  set_fact:
+    FioDisk: /dev/{{prefix.stdout}}
+
 - name: copy fio data
   copy:
     src: "{{playbook_dir}}/benchmarks/fio/data/" # Assumes you are in the dir of the playbook
@@ -30,8 +57,15 @@
     state: latest
   become: true
 
+- name: Precondition SSD
+  include_tasks: "{{playbook_dir}}/benchmarks/fio/include/precondition_ssd.yml"
+  when:
+    - precondition is defined
+    - precondition == true
+
 - name: Run fio job
-  shell: fio ~/fiojobs/{{jobfile}} --runtime={{duration}} --output=results.txt
+  shell: fio ~/fiojobs/{{jobfile}} --runtime={{duration}} --filename={{FioDisk}} --output=results.txt
+  become: true
 
 - name: Parse Fio Result file
   shell: python ~/parser.py "{{benchmark}}" "{{cloud}}" "{{hostvars['localhost'].instance_type}}" "{{hostvars['localhost'].region}}" "{{secret_key}}" "{{ingress_url}}" "{{os}}" >> parser_output.txt
@@ -44,5 +78,3 @@
 - name: Print responce
   debug:
     msg: "Responce code: {{res.stdout}}"
-
-  

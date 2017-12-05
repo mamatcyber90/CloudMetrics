@@ -1,0 +1,14 @@
+---
+
+# add aws disk
+
+# may need to stop device
+- name: Create and attach seperate AWS disk
+  local_action: ec2_vol
+                  device_name=/dev/sdb
+                  instance="{{item}}"
+                  volume_size=2
+                  volume_type=gp2
+                  region="{{region}}"
+                  delete_on_termination=true
+  when: cloud == "aws"
