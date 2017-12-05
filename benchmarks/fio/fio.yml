@@ -64,14 +64,13 @@
     - precondition == true
 
 - name: Run fio job
-  shell: fio ~/fiojobs/{{jobfile}} --runtime={{duration}} --filename={{FioDisk}} --output=results.txt
-  become_method: sudo
+  shell: sudo fio ~/fiojobs/{{jobfile}} --runtime={{duration}} --filename={{FioDisk}} --output=results.txt
 
 - shell: cat results.txt
   register: r
 
 - debug:
-    var: r.out
+    msg: "{{r.out}}"
 
 - name: Parse Fio Result file
   shell: python ~/parser.py "{{benchmark}}" "{{cloud}}" "{{hostvars['localhost'].instance_type}}" "{{hostvars['localhost'].region}}" "{{secret_key}}" "{{ingress_url}}" "{{os}}" >> parser_output.txt

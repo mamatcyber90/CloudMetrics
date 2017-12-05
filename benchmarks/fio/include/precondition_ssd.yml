@@ -7,5 +7,4 @@
   shell: dd if=/dev/zero bs=1024k of={{FioDisk}}
 
 - name: Precondition SSD | Fill drive with random Data
-  shell: fio ~/fiojobs/precondition.fio --runtime=10 --filename={{FioDisk}}
-  become_method: sudo
+  shell: sudo fio ~/fiojobs/precondition.fio --runtime=10 --filename={{FioDisk}}
