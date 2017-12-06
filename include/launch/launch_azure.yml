@@ -35,6 +35,7 @@
     location: "{{region}}"
     vm_size: "{{instance_type}}"
     admin_username: "{{ssh_user}}"
+    managed_disk_type: Premium_LRS
     ssh_public_keys:
       - path: /home/{{ssh_user}}/.ssh/authorized_keys
         key_data: "{{ssh_public_key.stdout}}"

@@ -12,4 +12,3 @@
                   region="{{region}}"
                   delete_on_termination=true
   with_items: "{{hostvars['localhost'].ec2.instance_ids}}"
-  when: cloud == "aws"
