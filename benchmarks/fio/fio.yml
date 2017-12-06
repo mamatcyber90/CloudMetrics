@@ -70,7 +70,7 @@
   register: r
 
 - debug:
-    msg: "{{r.out}}"
+    msg: "{{r.stdout}}"
 
 - name: Parse Fio Result file
   shell: python ~/parser.py "{{benchmark}}" "{{cloud}}" "{{hostvars['localhost'].instance_type}}" "{{hostvars['localhost'].region}}" "{{secret_key}}" "{{ingress_url}}" "{{os}}" >> parser_output.txt

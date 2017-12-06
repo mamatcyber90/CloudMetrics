@@ -14,11 +14,6 @@
     # AWS Specific
     key: my_key
 
-    # Google Cloud Specific vars
-    pid: 1234
-    serv_acct_email: 987-compute@compute@developer.gserviceaccount.com
-    cred_file: ~/my_creds.json
-
     # Azure Specific vars
     azure_sub_id: 123-a23-32
 
