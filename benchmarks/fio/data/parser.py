@@ -27,6 +27,12 @@ secret_key = sys.argv[5]
 ingress_url = sys.argv[6]
 os = sys.argv[7]
 
+raw_results = open("results.txt", "r")
+
+start_strings = list()
+end_strings = list()
+iops = list()
+
 # Split results into seperate files
 for line in raw_results:
     if (line.find('(groupid=') != -1):
@@ -38,7 +44,6 @@ for line in raw_results:
 
 
 raw_results.close()
-trimmed_results.close()
 
 # Read results into Python
 
@@ -56,7 +61,7 @@ end_iso_list = [obj.isoformat()[:-7] for obj in end_objs] # removes miliseconds
 ### Build JSON Body ###
 
 # convert string into a python object
-samples = list(zip(start_iso_list,end_iso_list,gflops))
+samples = list(zip(start_iso_list,end_iso_list,iops))
 
 body = {"batch_started":start_iso_list[0],
         "test_type": test_type,
@@ -68,7 +73,6 @@ body = {"batch_started":start_iso_list[0],
 
 prettybody = json.dumps(body, indent=4)
 signature = base64.b64encode(hmac.new(secret_key.encode(), prettybody.encode(), digestmod=hashlib.sha256).digest()).decode()
-
 
 print("The Signature is: {}".format(signature))
 
