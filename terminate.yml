@@ -13,15 +13,18 @@
       when:
         - cloud is defined
         - cloud == "aws"
+        - DontTerminate is not defined
 
     - name: Clean up gce
       include_tasks: "{{playbook_dir}}/include/terminate/terminate_gce.yml"
       when:
         - cloud is defined
         - cloud == "gce"
+        - DontTerminate is not defined
 
     - name: Clean up Azure
       include_tasks: "{{playbook_dir}}/include/terminate/terminate_azure.yml"
       when:
         - cloud is defined
         - cloud == "azure"
+        - DontTerminate is not defined
