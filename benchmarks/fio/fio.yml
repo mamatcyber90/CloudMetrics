@@ -61,7 +61,7 @@
   include_tasks: "{{playbook_dir}}/benchmarks/fio/include/precondition_ssd.yml"
   when:
     - precondition is defined
-    - precondition == true
+    - precondition == "true"
 
 - name: Run fio job
   shell: sudo fio ~/fiojobs/{{jobfile}} --runtime={{duration}} --filename={{FioDisk}} --output=results.txt
