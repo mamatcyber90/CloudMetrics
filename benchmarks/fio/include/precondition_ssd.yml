@@ -11,4 +11,4 @@
 # Want to use root privledges, but want to recognize ~ as not the root's directory
 # hardcoded sudo resolves this, but not in the most elegant way
 - name: Precondition SSD | Fill drive with random Data
-  shell: sudo fio ~/fiojobs/precondition.fio --runtime=10 --filename={{FioDisk}}
+  shell: sudo fio ~/fiojobs/precondition.fio --runtime={{precon_time}} --filename={{FioDisk}}
