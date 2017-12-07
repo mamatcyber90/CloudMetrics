@@ -1,0 +1,16 @@
+---
+
+# Tasks to add setup aws with iperf
+
+- name: Add AWS Instance to Sending iperf Group
+  add_host:
+    name: "{{ hostvars['localhost'].ec2.instances.0.public_ip }}"
+    groups: iperf3-sending
+
+- name: Add AWS Instance to Recieving iperf group
+  add_host:
+    name: "{{ hostvars['localhost'].ec2.instances.1.public_ip }}"
+    groups: iperf3-recieving
+
+- name: Add iperf Security rules to AWS instances
+  

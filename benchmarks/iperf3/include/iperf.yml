@@ -1,0 +1,16 @@
+---
+
+# Seperates iperf hosts into sender and reciever and
+# adds necessary ports to make the servers function properly
+
+- name: Set up Iperf with AWS
+  include_tasks: "{{playbook_dir}}/include/iperf/aws.yml"
+  when: cloud == "aws"
+
+- name: Set up Iperf with GCE
+  include_tasks: "{{playbook_dir}}/include/iperf/gce.yml"
+  when: cloud == "gce"
+
+- name: Set up Iperf with Azure
+  include_tasks: "{{playbook_dir}}/include/iperf/azure.yml"
+  when: cloud == "azure"

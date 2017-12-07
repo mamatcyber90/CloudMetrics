@@ -10,5 +10,6 @@
                   volume_size=2
                   volume_type=gp2
                   region="{{region}}"
+                  volume_size=10
                   delete_on_termination=true
   with_items: "{{hostvars['localhost'].ec2.instance_ids}}"

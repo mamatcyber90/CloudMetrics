@@ -10,10 +10,11 @@ rw=randread
 iodepth=4
 numjobs=1
 buffered=0
-size=10240
+size=1073741824
 time_based
-randrepeat=0
+randrepeat=1
 norandommap
 refill_buffers
-[job1]
+
+[job]
 group_reporting
