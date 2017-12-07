@@ -63,23 +63,32 @@
     - precondition is defined
     - precondition == "true"
 
-- name: Run fio job
-  shell: sudo fio ~/fiojobs/{{jobfile}} --runtime={{duration}} --filename={{FioDisk}} --output=results.txt
+- name: Set ENDTIME
+  set_fact:
+    ENDTIME: "{{ lookup('pipe','date +%s')|int + duration|int }}"
 
-- shell: cat results.txt
-  register: r
-
-- debug:
-    msg: "{{r.stdout}}"
+- name: Run fio benchmark
+  shell: sudo fio ~/fiojobs/{{jobfile}} --runtime={{interval}} --filename={{FioDisk}} >> ~/fio.json
+  until: lookup('pipe','date +%s')|int > ENDTIME|int
+  delay: 0
+  retries: 10000
 
 - name: Parse Fio Result file
-  shell: python ~/parser.py "{{benchmark}}" "{{cloud}}" "{{hostvars['localhost'].instance_type}}" "{{hostvars['localhost'].region}}" "{{secret_key}}" "{{ingress_url}}" "{{os}}" >> parser_output.txt
+  shell: python ~/parser.py "{{benchmark}}" "{{cloud}}" "{{hostvars['localhost'].instance_type}}" "{{hostvars['localhost'].region}}" "{{secret_key}}" "{{ingress_url}}" "{{os}}" "{{interval}}" "{{jobfile}}" >> parser_output.txt
   when: ingress_url != "127.0.0.1"
 
-- name: get responce value
-  shell: cat ~/responce.txt
-  register: res
+- name: get iops request responce value
+  shell: cat ~/iops_responce.txt
+  register: iops_res
 
-- name: Print responce
+- name: Print iops responce
   debug:
-    msg: "Responce code: {{res.stdout}}"
+    msg: "Responce code: {{iops_res.stdout}}"
+
+- name: get latency responce value
+  shell: cat ~/lat_responce.txt
+  register: lat_res
+
+- name: Print lat responce
+  debug:
+    msg: "Responce code: {{lat_res.stdout}}"
