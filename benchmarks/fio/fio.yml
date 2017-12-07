@@ -68,7 +68,7 @@
     ENDTIME: "{{ lookup('pipe','date +%s')|int + duration|int }}"
 
 - name: Run fio benchmark
-  shell: sudo fio ~/fiojobs/{{jobfile}} --runtime={{interval}} --filename={{FioDisk}} >> ~/fio.json
+  shell: sudo fio ~/fiojobs/{{jobfile}} --runtime={{interval}} --filename={{FioDisk}} --output-format=json >> ~/fio.json
   until: lookup('pipe','date +%s')|int > ENDTIME|int
   delay: 0
   retries: 10000
