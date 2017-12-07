@@ -87,4 +87,4 @@ def sendResult(filename,samples, starttime, test_type):
 
 
 sendResult("iops_responce.txt",iops_samples, start_iso[0], "{}-{}".format(test_type,jobfile))
-sendResult("lat_responce.txt",lat_samples, start_iso[0], "{}-{}-latency".format(test_type,jobfile))
+sendResult("lat_responce.txt",latency_samples, start_iso[0], "{}-{}-latency".format(test_type,jobfile))
