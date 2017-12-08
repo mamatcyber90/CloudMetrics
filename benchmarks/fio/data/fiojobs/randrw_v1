@@ -1,5 +1,4 @@
 # adapted from https://github.com/intel/fiovisualizer/blob/master/Workloads/Device/NVMe_04k_RR_QD4_32J.ini
-# name=4k random read 4 ios in the queue in 16 queues
 
 [global]
 ioengine=libaio

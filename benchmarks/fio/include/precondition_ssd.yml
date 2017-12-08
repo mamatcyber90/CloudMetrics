@@ -3,6 +3,8 @@
 # precondition SSD
 # Adapted from https://github.com/intel/fiovisualizer/blob/master/Workloads/Precondition/SSD%20precondition.txt
 
+# Probably not necessary for a virtual machine's volume, since SSD will not be brand new
+
 - name: Precondition SSD | Fill drive with sequential data
   shell: dd if=/dev/zero bs=1024k of={{FioDisk}}
   become: true
