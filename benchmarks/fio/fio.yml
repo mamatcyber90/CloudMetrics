@@ -77,18 +77,5 @@
   shell: python ~/parser.py "{{benchmark}}" "{{cloud}}" "{{hostvars['localhost'].instance_type}}" "{{hostvars['localhost'].region}}" "{{secret_key}}" "{{ingress_url}}" "{{os}}" "{{interval}}" "{{jobfile}}" >> parser_output.txt
   when: ingress_url != "127.0.0.1"
 
-- name: get iops request responce value
-  shell: cat ~/iops_responce.txt
-  register: iops_res
-
-- name: Print iops responce
-  debug:
-    msg: "Responce code: {{iops_res.stdout}}"
-
-- name: get latency responce value
-  shell: cat ~/lat_responce.txt
-  register: lat_res
-
-- name: Print lat responce
-  debug:
-    msg: "Responce code: {{lat_res.stdout}}"
+- name: print responce values
+  include_tasks: "{{playbook_dir}}/benchmarks/fio/include/res.yml"

@@ -1,0 +1,43 @@
+---
+
+# print responce values from files created by python parser
+
+- name: get iops request responce value
+  shell: cat ~/iops_responce.txt
+  register: iops_res
+
+- name: Print iops responce
+  debug:
+    msg: "Responce code: {{iops_res.stdout}}"
+
+- name: get bw request responce value
+  shell: cat ~/bw_responce.txt
+  register: bw_res
+
+- name: Print bw responce
+  debug:
+    msg: "Responce code: {{bw_res.stdout}}"
+
+- name: get clat_mean request responce value
+  shell: cat ~/clat_mean_responce.txt
+  register: clat_mean_res
+
+- name: Print clat_mean responce
+  debug:
+    msg: "Responce code: {{clat_mean_res.stdout}}"
+
+- name: get clat_std request responce value
+  shell: cat ~/clat_std_responce.txt
+  register: clat_std_res
+
+- name: Print clat_std responce
+  debug:
+    msg: "Responce code: {{clat_std_res.stdout}}"
+
+- name: get clat_95 request responce value
+  shell: cat ~/clat_95_responce.txt
+  register: clat_95_res
+
+- name: Print clat_95 responce
+  debug:
+    msg: "Responce code: {{clat_95_res.stdout}}"

@@ -27,6 +27,10 @@ start_times = list()
 end_times = list()
 iops = list()
 latency = list()
+bw = list()
+clat95 = list()
+clat_std = list()
+
 
 with open("fio.json") as fulltext:
     tests=fulltext.read().replace("}\n{","}\n*\n{").split("*")
@@ -36,15 +40,23 @@ with open("fio.json") as fulltext:
 
         start_times.append(datetime.datetime.fromtimestamp(int(fiojson['timestamp'])))
         end_times.append(start_times[i]+datetime.timedelta(seconds=int(interval)))
+
         iops.append(fiojson['jobs'][0]['mixed']['iops'])
-        latency.append(fiojson['jobs'][0]['mixed']['lat']['mean'])
+        bw.append(fiojson['jobs'][0]['mixed']['bw'])
+
+        clat_mean.append(fiojson['jobs'][0]['mixed']['clat']['mean'])
+        clat_std.append(fiojson['jobs'][0]['mixed']['clat']['stddev'])
+        clat_95.append(fiojson['jobs'][0]['mixed']['clat']['percentile']['95.000000'])
 
 start_iso = [date.isoformat() for date in start_times]
 end_iso = [date.isoformat() for date in end_times]
 
 iops_samples = list(zip(start_iso,end_iso,iops))
-latency_samples = list(zip(start_iso,end_iso,latency))
+bw_samples=list(zip(start_iso,end_iso,bw))
 
+clat_95_samples=list(zip(start_iso,end_iso,clat_95))
+clat_mean_samples=list(zip(start_iso,end_iso,clat_mean))
+clat_std_samples=list(zip(start_iso,end_iso,clat_std))
 
 def sendResult(filename,samples, starttime, test_type):
 
@@ -83,8 +95,12 @@ def sendResult(filename,samples, starttime, test_type):
     print(prettybody)
 
 
-####
+#### Sending Results ####
 
 
-sendResult("iops_responce.txt",iops_samples, start_iso[0], "{}-{}".format(test_type,jobfile))
-sendResult("lat_responce.txt",latency_samples, start_iso[0], "{}-{}-latency".format(test_type,jobfile))
+sendResult("iops_responce.txt",iops_samples, start_iso[0], "{}-{}-iops".format(test_type,jobfile))
+sendResult("bw_responce.txt",bw_samples, start_iso[0], "{}-{}-bw".format(test_type,jobfile))
+
+sendResult("clat_95_responce.txt",clat_95_samples, start_iso[0], "{}-{}-clat_95".format(test_type,jobfile))
+sendResult("clat_mean_responce.txt",clat_mean_samples, start_iso[0], "{}-{}-clat_mean".format(test_type,jobfile))
+sendResult("clat_std_responce.txt",clat_std_samples, start_iso[0], "{}-{}-clat_std".format(test_type,jobfile))
