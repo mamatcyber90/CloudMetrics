@@ -26,11 +26,11 @@ jobfile = sys.argv[9]
 start_times = list()
 end_times = list()
 iops = list()
-latency = list()
 bw = list()
-clat95 = list()
-clat_std = list()
 
+clat_95 = list()
+clat_std = list()
+clat_mean = list()
 
 with open("fio.json") as fulltext:
     tests=fulltext.read().replace("}\n{","}\n*\n{").split("*")
