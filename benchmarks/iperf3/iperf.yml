@@ -30,10 +30,24 @@
 
 # Run iperf3 benchmark
 
+- name: Start recieving iperf server
+  shell: iperf3 -s
+  delegate_to: "{{iperf3-recieving}}"
+
+- name: Set ENDTIME
+  set_fact:
+    ENDTIME: "{{ lookup('pipe','date +%s')|int + duration|int }}"
+
 - name: run iperf3 and ping network during tests
-  include_tasks:
+  include_tasks: "{{playbook_dir}}/benchmarks/iperf3/run_iperf.yml"
+  until: lookup('pipe','date +%s')|int > ENDTIME|int
+  delay: 0
+  retries: 10000
 
 - name: get Jitter list (ping stddev)
   shell: cat pingout.txt | grep rtt | cut -d " " -f 4 | cut -d "/" -f 4 >> jitter.txt
 
 # run python script
+- name: Parse iperf Result file
+  shell: python ~/parser.py "{{benchmark}}" "{{cloud}}" "{{hostvars['localhost'].instance_type}}" "{{hostvars['localhost'].region}}" "{{secret_key}}" "{{ingress_url}}" "{{os}}" >> parser_output.txt
+  when: ingress_url != "127.0.0.1"

@@ -1,10 +1,12 @@
 ---
 
 # http://docs.ansible.com/ansible/latest/playbooks_loops.html#looping-over-parallel-sets-of-data
+# if we decided to do multiple servers at once
 
 - name: Start pinging server
-  shell: ping -i 1 -w {{interval}} {{item[0]}} >> pingout.txt
-  delegate_to: "{{item[1]}}"
-  with_nested:
-    - groups.iperf3-sending
-    - groups.iperf3-recieving
+  shell: ping -i .5 -w {{interval}} {{iperf3-recieving-private}} >> pingout.txt &
+  delegate_to: "{{iperf3-sending}}"
+
+- name: Start iperf requests to recieving server
+  shell: iperf3 -c {{iperf3-recieving-private}} -f m --time {{interval}} -J --logfile perf.json
+  delegate_to: "{{iperf3-sending}}"
