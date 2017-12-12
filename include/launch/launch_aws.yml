@@ -27,5 +27,5 @@
     region: "{{ region }}"
     state: present
     tags:
-      Name: AWS {{size}} {{lookup('pipe','env TZ=America/Chicago date')}}
+      Name: "{{size}}-{{benchmark}}-{{lookup('pipe','date +%s')}}"
   with_items: "{{ ec2.instances }}"

@@ -2,7 +2,7 @@
 ---
 - name: Launch GCE Instance
   gce:
-    name: "{{size}}-{{lookup('pipe','date +%s')}}"
+    name: "{{size}}-{{benchmark}}-{{lookup('pipe','date +%s')}}"
     zone: "{{region}}"
     machine_type: "{{instance_type}}"
     image: "{{gce_image}}"
