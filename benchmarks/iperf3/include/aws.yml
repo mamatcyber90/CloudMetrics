@@ -41,6 +41,6 @@
 
 - name: Add iperf Security rules to AWS instances
   local_action:
-    shell:
+    module: shell
       aws ec2 modify-instance-attribute --region {{region}} --instance-id {{item.id}} --groups {{sec_id.group_id}}
   with_items: "{{hostvars['localhost'].ec2.instances}}"
