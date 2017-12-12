@@ -59,12 +59,12 @@
 
 - name: add azure private IP to IP lists
   set_fact:
-    azure_ips: "{{azure_private_ips}} + [ '{{ temp_azure_private_ip }}' ]"
+    azure_private_ips: "{{azure_private_ips}} + [ '{{ temp_azure_private_ip }}' ]"
   when: azure_private_ips is defined
 
 - name: Create Azure IP list if not created
   set_fact:
-    azure_ips:
+    azure_private_ips:
       - "{{temp_azure_private_ip}}"
   when: azure_private_ips is not defined
 
