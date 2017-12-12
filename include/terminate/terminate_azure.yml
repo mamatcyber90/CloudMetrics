@@ -6,7 +6,6 @@
 
 - name: Remove Temp Resource group
   azure_rm_resourcegroup:
-    name: '{{item}}'
+    name: '{{resource_group}}'
     state: absent
     force: true
-  with_items: "{{azure_vm_names}}"

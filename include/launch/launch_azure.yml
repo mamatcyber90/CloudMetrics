@@ -3,34 +3,18 @@
 
 - name: Set temp Azure VM name
   set_fact:
-    azure_vm_name: "{{size}}-{{lookup('pipe','date +%s')}}"
+    azure_vm_name: "{{size}}-{{benchmark}}-{{lookup('pipe','date +%s')}}"
 
-- name: Create Temp resource_group
-  azure_rm_resourcegroup:
-    name: "{{azure_vm_name}}"
-    location: "{{region}}"
-    tags:
-        testing: "{{benchmark}}"
-        group: CloudWeatherReport
+- name: Create Resource Group for current batch
+  include_tasks: "{{playbook_dir}}/include/launch/azure_resource_group.yml"
 
-- name: create virtual network
-  azure_rm_virtualnetwork:
-    name: "{{azure_vm_name}}-Network"
+- name: Set Resource Group name
+  set_fact:
     resource_group: "{{azure_vm_name}}"
-    address_prefixes_cidr:
-        - "10.1.0.0/16"
-        - "172.100.0.0/16"
-
-- name: Create a subnet
-  azure_rm_subnet:
-    name: "{{azure_vm_name}}-SubNet"
-    virtual_network_name: "{{azure_vm_name}}-Network"
-    resource_group: "{{azure_vm_name}}"
-    address_prefix_cidr: "10.1.0.0/24"
 
 - name: Launch Azure Instance
   azure_rm_virtualmachine:
-    resource_group: "{{azure_vm_name}}"
+    resource_group: "{{resource_group}}"
     name: "{{azure_vm_name}}"
     location: "{{region}}"
     vm_size: "{{instance_type}}"
@@ -47,7 +31,7 @@
       version: "{{azure_version}}"
   register: azure_vm
 
-## Adding IP to IP list ##
+## Adding IPs to IP list ##
 
 # in order to keep things legible
 - name: set temp azure IP
