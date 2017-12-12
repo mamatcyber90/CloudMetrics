@@ -2,15 +2,45 @@
 
 # Tasks to add setup aws with iperf
 
-- name: Add AWS Instance to Sending iperf Group
-  add_host:
-    name: "{{ hostvars['localhost'].ec2.instances.0.public_ip }}"
-    groups: iperf3-sending
+# Add public and private IP
+- name: Register AWS sending node public IP
+  set_fact:
+    iperf3-sending: "{{ hostvars['localhost'].ec2.instances.0.public_ip }}"
 
-- name: Add AWS Instance to Recieving iperf group
-  add_host:
-    name: "{{ hostvars['localhost'].ec2.instances.1.public_ip }}"
-    groups: iperf3-recieving
+- name: Register AWS sending node private IP
+  set_fact:
+    iperf3-sending-private: "{{ hostvars['localhost'].ec2.instances.0.private_ip }}"
+
+- name: Register AWS recieving node public IP
+  set_fact:
+    iperf3-recieving: "{{ hostvars['localhost'].ec2.instances.1.public_ip }}"
+
+- name: Register AWS recieving node private IP
+  set_fact:
+    iperf3-recieving-private: "{{ hostvars['localhost'].ec2.instances.1.private_ip }}"
+
+- name: Ensure iperf security group exists in AWS
+  local_action:
+    module: ec2_group
+    name: iperf-rules
+    description: Rules necessary to run iperf3
+    rules:
+      - proto: tcp
+        from_port: 5201
+        to_port: 5201
+        cidr_ip: 0.0.0.0/0
+      - proto: icmp
+        from_port: -1 # allows everything
+        to_port: -1
+        cidr_ip: 0.0.0.0/0
+  register: sec_id
+
+
+# https://github.com/ansible/ansible/issues/29762
+# They are working on adding it to a running instances
 
 - name: Add iperf Security rules to AWS instances
-  
+  local_action:
+    shell:
+      aws ec2 modify-instance-attribute --region {{region}} --instance-id {{item.id}} --groups {{sec_id.group_id}}
+  with_items: ec2.instances

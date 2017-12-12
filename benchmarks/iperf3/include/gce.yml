@@ -1,0 +1,29 @@
+---
+
+# open ports on GCE instance
+
+- name: Register GCE sending node public IP
+  set_fact:
+    iperf3-sending: "{{ hostvars['localhost'].gce.instance_data.0.public_ip }}"
+
+- name: Register GCE sending node private IP
+  set_fact:
+    iperf3-sending-private: "{{ hostvars['localhost'].gce.instance_data.0.private_ip }}"
+
+- name: Register GCE recieving node public IP
+  set_fact:
+    iperf3-recieving: "{{ hostvars['localhost'].gce.instance_data.1.public_ip }}"
+
+- name: Register GCE recieving node private IP
+  set_fact:
+    iperf3-recieving-private: "{{ hostvars['localhost'].gce.instance_data.1.private_ip }}"
+
+- name: Ensure iperf3 security group exists in GCE
+  local_action:
+    module_name: gce_net
+    name: default # network name
+    fwname: iperf3-rules
+    allowed: tcp:5201 # GCE instances allow pinging by default
+    state: present
+    target_tags:
+      - "{{ benchmark }}" # iperf3

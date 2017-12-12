@@ -4,13 +4,13 @@
 # adds necessary ports to make the servers function properly
 
 - name: Set up Iperf with AWS
-  include_tasks: "{{playbook_dir}}/include/iperf/aws.yml"
+  include_tasks: "{{playbook_dir}}/benchmarks/iperf3/include/aws.yml"
   when: cloud == "aws"
 
 - name: Set up Iperf with GCE
-  include_tasks: "{{playbook_dir}}/include/iperf/gce.yml"
+  include_tasks: "{{playbook_dir}}/benchmarks/iperf3/include/gce.yml"
   when: cloud == "gce"
 
 - name: Set up Iperf with Azure
-  include_tasks: "{{playbook_dir}}/include/iperf/azure.yml"
+  include_tasks: "{{playbook_dir}}/benchmarks/iperf3/include/azure.yml"
   when: cloud == "azure"

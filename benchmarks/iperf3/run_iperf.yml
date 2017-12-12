@@ -1,0 +1,10 @@
+---
+
+# http://docs.ansible.com/ansible/latest/playbooks_loops.html#looping-over-parallel-sets-of-data
+
+- name: Start pinging server
+  shell: ping -i 1 -w {{interval}} {{item[0]}} >> pingout.txt
+  delegate_to: "{{item[1]}}"
+  with_nested:
+    - groups.iperf3-sending
+    - groups.iperf3-recieving

@@ -1,0 +1,39 @@
+---
+
+# iperf benchmark
+
+- name: add ports to instance
+  include_tasks: "{{playbook_dir}}/benchmarks/iperf3/include/iperf_ports.yml"
+
+- name: copy iperf data
+  copy:
+    src: "{{playbook_dir}}/benchmarks/iperf3/data/" # Assumes you are in the dir of the playbook
+    dest: ~/
+
+- name: Update all packages
+  package:
+    name: "*"
+    state: latest
+  become: true
+  when: update is defined
+
+# make only for Cent-like systems
+- name: Install EPEL repo RHEL/CentOS/Fedora
+  package:
+    name: epel-release
+    state: latest
+  when: ansible_os_family == "RedHat"
+  become: true
+
+- name: Install pip and its packages
+  include_tasks: "{{playbook_dir}}/include/downloads/pip.yml"
+
+# Run iperf3 benchmark
+
+- name: run iperf3 and ping network during tests
+  include_tasks:
+
+- name: get Jitter list (ping stddev)
+  shell: cat pingout.txt | grep rtt | cut -d " " -f 4 | cut -d "/" -f 4 >> jitter.txt
+
+# run python script

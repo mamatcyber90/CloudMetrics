@@ -9,6 +9,8 @@
     state: present
     disk_size: 10
     num_instances: "{{count}}"
+    tags:
+      - "{{benchmark}}"
   register: gce
 
 - name: Wait for SSH

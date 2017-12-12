@@ -54,6 +54,12 @@
   set_fact:
     temp_azure_ip: "{{azure_vm.properties.networkProfile.networkInterfaces.0.properties.ipConfigurations.0.properties.publicIPAddress.properties.ipAddress}}"
 
+- name: set temp azure private IP
+  set_fact:
+    temp_azure_private_ip: "{{azure_vm.properties.networkProfile.networkInterfaces.0.properties.ipConfigurations.0.properties.privateIPAddress}}"
+
+# Add to public IPs
+
 - name: add azure IP to IP lists
   set_fact:
     azure_ips: "{{azure_ips}} + [ '{{ temp_azure_ip }}' ]"
@@ -65,8 +71,21 @@
       - "{{temp_azure_ip}}"
   when: azure_ips is not defined
 
-## Adding Azure name to list to allow deletion later ##
+# Add to private IPs
 
+- name: add azure private IP to IP lists
+  set_fact:
+    azure_ips: "{{azure_private_ips}} + [ '{{ temp_azure_private_ip }}' ]"
+  when: azure_private_ips is defined
+
+- name: Create Azure IP list if not created
+  set_fact:
+    azure_ips:
+      - "{{temp_azure_private_ip}}"
+  when: azure_private_ips is not defined
+
+
+## Adding Azure name to list to allow deletion later ##
 - name: Add name to azure names list
   set_fact:
     azure_vm_names: "{{azure_vm_names}} + [ '{{azure_vm_name}}' ]"

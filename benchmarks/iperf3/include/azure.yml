@@ -1,0 +1,40 @@
+---
+
+# Azure
+
+- name: Register GCE sending node public IP
+  set_fact:
+    iperf3-sending: "{{ hostvars['localhost'].azure_ips.0 }}"
+
+- name: Register GCE sending node private IP
+  set_fact:
+    iperf3-sending-private: "{{ hostvars['localhost'].azure_pricate_ips.0 }}"
+
+- name: Register GCE recieving node public IP
+  set_fact:
+    iperf3-recieving: "{{ hostvars['localhost'].azure_ips.1 }}"
+
+- name: Register GCE recieving node private IP
+  set_fact:
+    iperf3-recieving-private: "{{ hostvars['localhost'].azure_private_ips.1 }}"
+
+# Add security groups to azure resource group
+- name: Add security group
+  azure_rm_securitygroup:
+      resource_group: mygroup
+      name: mysecgroup
+      purge_rules: yes
+      rules:
+          - name: DenySSH
+            protocol: TCP
+            destination_port_range: 22
+            access: Deny
+            priority: 100
+            direction: Inbound
+          - name: 'AllowSSH'
+            protocol: TCP
+            source_address_prefix: '174.109.158.0/24'
+            destination_port_range: 22
+            access: Allow
+            priority: 101
+            direction: Inbound
