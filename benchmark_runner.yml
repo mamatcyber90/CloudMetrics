@@ -18,3 +18,8 @@
       include_tasks: "{{playbook_dir}}/benchmarks/fio/fio.yml"
       ignore_errors: yes
       when: benchmark == "fio"
+
+    - name: Run Network Bandwith Tester (iperf3)
+      include_tasks: "{{playbook_dir}}/benchmarks/iperf3/iperf.yml"
+      ignore_errors: yes
+      when: benchmark == "iperf3"
