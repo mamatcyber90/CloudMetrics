@@ -7,10 +7,12 @@
 
 - name: Create Resource Group for current batch
   include_tasks: "{{playbook_dir}}/include/launch/azure_resource_group.yml"
+  when: resource_group is not defined
 
 - name: Set Resource Group name
   set_fact:
     resource_group: "{{azure_vm_name}}"
+  when: resource_group is not defined
 
 - name: Launch Azure Instance
   azure_rm_virtualmachine:
