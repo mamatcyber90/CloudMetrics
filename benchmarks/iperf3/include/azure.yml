@@ -19,22 +19,14 @@
     iperf3-recieving-private: "{{ hostvars['localhost'].azure_private_ips.1 }}"
 
 # Add security groups to azure resource group
-- name: Add security group
+- name: Add Azure Security Group
   azure_rm_securitygroup:
-      resource_group: mygroup
-      name: mysecgroup
-      purge_rules: yes
-      rules:
-          - name: DenySSH
-            protocol: TCP
-            destination_port_range: 22
-            access: Deny
-            priority: 100
-            direction: Inbound
-          - name: 'AllowSSH'
-            protocol: TCP
-            source_address_prefix: '174.109.158.0/24'
-            destination_port_range: 22
-            access: Allow
-            priority: 101
-            direction: Inbound
+    resource_group: "{{hostvars['localhost'].resource_group}}"
+    name: iperf3-rules
+    rules:
+      - name: iperf3_server
+        protocol: TCP
+        destination_port_r ange: 520
+        access: Allow
+        priority: 100
+        direction: Inbound
