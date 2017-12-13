@@ -4,9 +4,9 @@
 # if we decided to do multiple servers at once
 
 - name: Start pinging server
-  shell: ping -i .5 -w {{interval}} {{iperf3-recieving-private}} >> pingout.txt &
-  delegate_to: "{{iperf3-sending}}"
+  shell: ping -i .5 -w {{interval}} {{iperf3_recieving_private}} >> pingout.txt &
+  delegate_to: "{{iperf3_sending}}"
 
 - name: Start iperf requests to recieving server
-  shell: iperf3 -c {{iperf3-recieving-private}} -f m --time {{interval}} -J --logfile perf.json
-  delegate_to: "{{iperf3-sending}}"
+  shell: iperf3 -c {{iperf3_recieving_private}} -f m --time {{interval}} -J --logfile perf.json
+  delegate_to: "{{iperf3_sending}}"

@@ -4,19 +4,19 @@
 
 - name: Register Azure sending node public IP
   set_fact:
-    iperf3-sending: "{{ hostvars['localhost'].azure_ips.0 }}"
+    iperf3_sending: "{{ hostvars['localhost'].azure_ips.0 }}"
 
 - name: Register Azure sending node private IP
   set_fact:
-    iperf3-sending-private: "{{ hostvars['localhost'].azure_pricate_ips.0 }}"
+    iperf3_sending_private: "{{ hostvars['localhost'].azure_pricate_ips.0 }}"
 
 - name: Register Azure recieving node public IP
   set_fact:
-    iperf3-recieving: "{{ hostvars['localhost'].azure_ips.1 }}"
+    iperf3_recieving: "{{ hostvars['localhost'].azure_ips.1 }}"
 
 - name: Register Azure recieving node private IP
   set_fact:
-    iperf3-recieving-private: "{{ hostvars['localhost'].azure_private_ips.1 }}"
+    iperf3_recieving_private: "{{ hostvars['localhost'].azure_private_ips.1 }}"
 
 # Add security groups to azure resource group
 - name: Add Azure Security Group
@@ -26,7 +26,7 @@
     rules:
       - name: iperf3_server
         protocol: TCP
-        destination_port_r ange: 520
+        destination_port_range: 5201
         access: Allow
         priority: 100
         direction: Inbound

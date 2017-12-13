@@ -32,7 +32,7 @@
 
 - name: Start recieving iperf server
   shell: iperf3 -s
-  delegate_to: "{{iperf3-recieving}}"
+  delegate_to: "{{iperf3_recieving}}"
 
 - name: Set ENDTIME
   set_fact:
