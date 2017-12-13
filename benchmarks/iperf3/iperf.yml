@@ -29,6 +29,7 @@
   package:
     name: iperf3
     state: latest
+  become: true
 
 - name: Install pip and its packages
   include_tasks: "{{playbook_dir}}/include/downloads/pip.yml"
