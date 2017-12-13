@@ -24,6 +24,8 @@
     module: ec2_group
     name: iperf-rules
     description: Rules necessary to run iperf3
+    purge_rules: false
+    purge_rules_egress: false
     rules:
       - proto: tcp
         from_port: 5201
