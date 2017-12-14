@@ -66,3 +66,4 @@
   with_items:
     - jitter_responce.txt
     - mbps_responce.txt
+  when: inventory_hostname == iperf3_sending
