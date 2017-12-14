@@ -19,11 +19,11 @@
     iperf3_recieving_private: "{{ hostvars['localhost'].gce.instance_data.1.private_ip }}"
 
 - name: Ensure iperf3 security group exists in GCE
-  local_action:
-    module_name: gce_net
+  gce_net:
     name: default # network name
     fwname: iperf3-rules
     allowed: tcp:5201 # GCE instances allow pinging by default
     state: present
     target_tags:
       - "{{ benchmark }}" # iperf3
+  delegate_to: localhost
