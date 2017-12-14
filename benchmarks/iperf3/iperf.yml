@@ -81,7 +81,10 @@
 - name: Print Jitter Responce code
   debug:
     msg: "{{jitter.stdout}}"
+  when: inventory_hostname == iperf3_sending
+
 
 - name: Print Mbps Responce code
   debug:
     msg: "{{mbps.stdout}}"
+  when: inventory_hostname == iperf3_sending
