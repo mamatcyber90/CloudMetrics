@@ -49,6 +49,7 @@
   until: lookup('pipe','date +%s')|int > ENDTIME|int
   delay: 0
   retries: 10000
+  when: inventory_hostname == iperf3_sending
 
 - name: get Jitter list (ping stddev)
   shell: cat pingout.txt | grep rtt | cut -d " " -f 4 | cut -d "/" -f 4 >> jitter.txt
