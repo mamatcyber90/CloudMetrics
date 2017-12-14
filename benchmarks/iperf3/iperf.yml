@@ -59,3 +59,10 @@
   when:
     - ingress_url != "127.0.0.1"
     - inventory_hostname == iperf3_sending
+
+- name: Print responce codes
+  debug:
+    msg: "{{lookup('pipe','cat {{item}}')}}"
+  with_items:
+    - jitter_responce.txt
+    - mbps_responce.txt
