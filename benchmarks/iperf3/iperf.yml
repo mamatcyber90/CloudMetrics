@@ -45,7 +45,7 @@
     ENDTIME: "{{ lookup('pipe','date +%s')|int + duration|int }}"
 
 - name: run iperf3 and ping network during tests
-  include_tasks: "{{playbook_dir}}/benchmarks/iperf3/run_iperf.yml"
+  shell: ./run.sh "{{interval}}" "{{iperf3_recieving_private}}"
   until: lookup('pipe','date +%s')|int > ENDTIME|int
   delay: 0
   retries: 10000
