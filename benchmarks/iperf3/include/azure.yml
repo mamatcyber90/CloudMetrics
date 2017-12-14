@@ -18,16 +18,19 @@
   set_fact:
     iperf3_recieving_private: "{{ hostvars['localhost'].azure_private_ips.1 }}"
 
+# Don't need this task because Azure allows all traffic
+# between devices in its virtual network
+
 # Add security groups to azure resource group
-- name: Add Azure Security Group
-  azure_rm_securitygroup:
-    resource_group: "{{hostvars['localhost'].resource_group}}"
-    name: iperf3-rules
-    rules:
-      - name: iperf3_server
-        protocol: TCP
-        destination_port_range: 5201
-        access: Allow
-        priority: 100
-        direction: Inbound
-  delegate_to: localhost
+# - name: Add Azure Security Group
+#  azure_rm_securitygroup:
+#    resource_group: "{{hostvars['localhost'].resource_group}}"
+#    name: iperf3-rules
+#    rules:
+#      - name: iperf3_server
+#        protocol: TCP
+#        destination_port_range: 5201
+#        access: Allow
+#        priority: 100
+#        direction: Inbound
+#  delegate_to: localhost
