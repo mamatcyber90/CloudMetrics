@@ -38,8 +38,8 @@ with open("iperf.json") as fulltext:
 
 with open("jitter.txt") as jit:
     jitter = jit.read().split()
-    
-    
+
+
 
 start_iso = [date.isoformat() for date in start_times]
 end_iso = [date.isoformat() for date in end_times]
@@ -86,14 +86,5 @@ def sendResult(filename,samples, starttime, test_type):
 
 #### Sending Results ####
 
-sendResult("jitter_responce.txt",iops_samples, start_iso[0], "{}-jitter".format(test_type))
-sendResult("mbps_responce.txt",bw_samples, start_iso[0], "{}-bw-Mbps".format(test_type,jobfile))
-
-
-
-
-
-
-
-
-
+sendResult("jitter_responce.txt",jitter_samples, start_iso[0], "{}-jitter".format(test_type))
+sendResult("mbps_responce.txt",mb_samples, start_iso[0], "{}-bw-Mbps".format(test_type))
