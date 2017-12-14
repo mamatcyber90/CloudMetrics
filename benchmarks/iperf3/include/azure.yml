@@ -8,7 +8,7 @@
 
 - name: Register Azure sending node private IP
   set_fact:
-    iperf3_sending_private: "{{ hostvars['localhost'].azure_pricate_ips.0 }}"
+    iperf3_sending_private: "{{ hostvars['localhost'].azure_private_ips.0 }}"
 
 - name: Register Azure recieving node public IP
   set_fact:
@@ -30,3 +30,4 @@
         access: Allow
         priority: 100
         direction: Inbound
+  delegate_to: localhost
