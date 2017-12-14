@@ -5,8 +5,8 @@
 
 - name: Start pinging server
   shell: ping -i .5 -w {{interval}} {{iperf3_recieving_private}} >> pingout.txt &
-  when: inventory_hostname == "{{iperf3_sending}}" # only run on that one instance
+  when: inventory_hostname == iperf3_sending # only run on that one instance
 
 - name: Start iperf requests to recieving server
   shell: iperf3 -c {{iperf3_recieving_private}} -f m --time {{interval}} -J --logfile perf.json
-  when: inventory_hostname == "{{iperf3_sending}}"
+  when: inventory_hostname == iperf3_sending

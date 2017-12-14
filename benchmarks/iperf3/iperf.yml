@@ -38,7 +38,7 @@
 
 - name: Start recieving iperf server
   shell: iperf3 -s
-  when: inventory_hostname == "{{iperf3_recieving}}"
+  when: inventory_hostname == iperf3_recieving
 
 - name: Set ENDTIME
   set_fact:
