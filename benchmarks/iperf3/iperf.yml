@@ -48,7 +48,7 @@
   file:
     path: ./run.sh
     mode: 0700
-    
+
 - name: run iperf3 and ping network during tests
   shell: ./run.sh "{{interval}}" "{{iperf3_recieving_private}}"
   until: lookup('pipe','date +%s')|int > ENDTIME|int
@@ -66,10 +66,22 @@
     - ingress_url != "127.0.0.1"
     - inventory_hostname == iperf3_sending
 
-- name: Print responce codes
-  debug:
-    msg: "{{lookup('pipe','cat {{item}}')}}"
-  with_items:
-    - jitter_responce.txt
-    - mbps_responce.txt
+# Print responce
+
+- name: Register Jitter Responce code
+  shell: cat jitter_responce.txt
+  register: jitter
   when: inventory_hostname == iperf3_sending
+
+- name: Register Mbps Responce code
+  shell: cat mbps_responce.txt
+  register: mbps
+  when: inventory_hostname == iperf3_sending
+
+- name: Print Jitter Responce code
+  debug:
+    msg: "{{jitter.stdout}}"
+
+- name: Print Mbps Responce code
+  debug:
+    msg: "{{mbps.stdout}}"
