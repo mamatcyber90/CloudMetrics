@@ -69,6 +69,22 @@
       when: cloud == "azure"
       with_items: "{{nums}}"
 
+    # Execute Windows Prep script
+    - name: Execute Ansible Prep Script on Azure Windows VMs
+      azure_rm_virtualmachine_extension:
+        name: prep_ansible
+        resource_group: "{{resource_group}}"
+        virtual_machine_name: "{{ item }}"
+        publisher: Microsoft.Azure.Extensions
+        virtual_machine_extension_type: CustomScript
+        type_handler_version: 2.0
+        settings: '{"commandToExecute": "(New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1') | powershell -command -"}'
+        auto_upgrade_minor_version: true
+      with_items: "{{azure_vm_names}}"
+      when:
+        - os == "windows"
+        - cloud == "azure"
+
     # It isnt done with every vm to save time while the others are booting
     - name: Wait for last Azure VM to start
       wait_for:
