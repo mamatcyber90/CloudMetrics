@@ -2,4 +2,47 @@
 
 # Ansible task for RamSMP test
 
-- name
+- name: copy data
+  copy:
+    src: "{{playbook_dir}}/benchmarks/ramsmp/data/" # Assumes you are in the dir of the playbook
+    dest: ~/
+
+- name: Download GCC and wget
+  package:
+    name: "{{item}}"
+    state: latest
+  with_items:
+    - gcc
+    - wget
+
+- name: Download Ramspeed
+  get_url:
+    file: www.alasir.com/software/ramspeed/ramsmp-3.5.0.tar.gz
+    dest: ~
+
+- name: Extract the package
+  unarchive:
+    src: ramsmp-3.5.0.tar.gz
+    dest: ~
+
+- name: Build package
+  shell: ./build.sh
+  args:
+    chdir: ~/ramsmp-3.5.0
+    stdin: \n
+
+- name: Set ENDTIME
+  set_fact:
+    ENDTIME: "{{ lookup('pipe','date +%s')|int + duration|int }}"
+
+- name: Run ramspeed benchmark
+  shell: ./ramsmp -b 3 >> ~/results.txt
+  args:
+    chdir: ~/ramsmp-3.5.0
+  until: lookup('pipe','date +%s')|int > ENDTIME|int
+  delay: 0
+  retries: 10000
+
+- name: Trim results
+  shell: cat results.txt | grep AVERAGE
+    chdir: ~
