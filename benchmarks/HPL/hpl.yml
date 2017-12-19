@@ -88,3 +88,9 @@
 - name: Print responce
   debug:
     msg: "Responce code: {{res.stdout}}"
+
+- name: Set passed result
+  set_fact:
+    passed: true
+  when:
+    - res.stdout == "200"

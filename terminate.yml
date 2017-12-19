@@ -14,6 +14,9 @@
         - cloud is defined
         - cloud == "aws"
         - DontTerminate is not defined
+      register: clean_aws
+      failed_when: (clean_aws.stderr | regex_search("(?i)fail")) or
+                   (clean_aws.stderr | regex_search("(?i)error"))
 
     - name: Clean up gce
       include_tasks: "{{playbook_dir}}/include/terminate/terminate_gce.yml"
@@ -21,6 +24,9 @@
         - cloud is defined
         - cloud == "gce"
         - DontTerminate is not defined
+      register: clean_gce
+      failed_when: (clean_gce.stderr | regex_search("(?i)fail")) or
+                   (clean_gce.stderr | regex_search("(?i)error"))
 
     - name: Clean up Azure
       include_tasks: "{{playbook_dir}}/include/terminate/terminate_azure.yml"
@@ -28,3 +34,12 @@
         - cloud is defined
         - cloud == "azure"
         - DontTerminate is not defined
+      register: clean_azure
+      failed_when: (clean_azure.stderr | regex_search("(?i)fail")) or
+                   (clean_azure.stderr | regex_search("(?i)error"))
+
+      # Passed variable is set during every benchmark
+    - name: Check responce codes
+      fail:
+        mag: "Not all requests recieved 200 responces"
+      when: passed is not defined

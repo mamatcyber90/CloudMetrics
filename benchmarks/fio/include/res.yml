@@ -41,3 +41,14 @@
 - name: Print clat_95 responce
   debug:
     msg: "Responce code: {{clat_95_res.stdout}}"
+
+- name: Set passed result
+  set_fact:
+    passed: true
+  when:
+    - iops_res.stdout == "200"
+    - bw_res.stdout == "200"
+    - clat_mean_res.stdout == "200"
+    - clat_std_res.stdout == "200"
+    - clat_95_res.stdout == "200"
+    
