@@ -24,7 +24,7 @@
 - name: Set AWS Startup Script
   set_fact:
     aws_startup: |
-    <powershell>
-    Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1') | powershell -command -
-    </powershell>
+      <powershell>
+      Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1') | powershell -command -
+      </powershell>
   when: os | search("windows")
