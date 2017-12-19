@@ -1,8 +1,17 @@
 # Launch GCE Instance on Centos
 ---
+
+- name: Set GCE instance name
+  set_fact:
+    gce_name: "{{size}}-{{benchmark}}-{{lookup('pipe','date +%s')}}"
+
+- name: Print GCE Name
+  debug:
+    var: gce_name
+
 - name: Launch GCE Instance
   gce:
-    name: "{{size}}-{{benchmark}}-{{lookup('pipe','date +%s')}}"
+    name: "{{gce_name}}"
     zone: "{{region}}"
     machine_type: "{{instance_type}}"
     image: "{{gce_image}}"
@@ -11,6 +20,7 @@
     num_instances: "{{count}}"
     tags:
       - "{{benchmark}}"
+    metadata: { "startup-script" : "{{gce_startup}}" }
   register: gce
 
 - name: Wait for SSH

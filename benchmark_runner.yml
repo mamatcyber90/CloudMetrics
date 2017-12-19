@@ -11,10 +11,10 @@
 
     # Ensure a job that runs at 2 and 5 exists.
 # Creates an entry like "0 5,2 * * ls -alh > /dev/null"
-    - Name: Create auto-shutdown chron job
+    - Name: Create auto-shutdown chron job (stops instances)
       cron:
-        name: "Shutdown on the hour"
-        minute: "0"
+        name: "Shutdown at X:55"
+        minute: "55"
         job: "sudo shutdown -h now"
       when: os != "windows"
 

@@ -1,6 +1,11 @@
 ---
 # for AWS Runs
 # Only runs on CENT for now
+
+ name: Initialize Blank AWS Startup Script
+  set_fact:
+    aws_startup: ""
+
 - name: Set CentOS-7 US-WEST-2 image
   set_fact:
     aws_image: ami-e535c59d # default centos7
@@ -14,3 +19,9 @@
   when:
     - os == "centos7"
     - region | search("us-east-2")
+
+
+- name: Set AWS Startup Script
+  set_fact:
+    aws_startup: <powershell> Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1') | powershell -command - </powershell>
+  when: os | search("windows")

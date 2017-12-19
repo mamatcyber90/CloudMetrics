@@ -1,7 +1,17 @@
 ---
 # for GCE Runs
 # Only runs on CENT for now
+
+- name: Initialize Blank GCE Startup Script
+  set_fact:
+    gce_startup: ""
+
 - name: Set CentOS-7 image
   set_fact:
     gce_image: centos-7 # default centos7
   when: os == "centos7"
+
+- name: Set GCE Startup Script
+  set_fact:
+    gce_startup: Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1') | powershell -command -
+  when: os | search("windows")

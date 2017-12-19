@@ -2,6 +2,8 @@
 # for Azyre Runs
 # Only runs on CENT for now
 
+# Don't need to initialize Azure Startup because it is only used after the instance is provisioned
+
 # Images must be from the Azure Marketplace
 - name: Set CentOS-7 image
   set_fact:
@@ -10,3 +12,8 @@
     azure_sku: '7.1'
     azure_version: latest
   when: os == "centos7"
+
+- name: Set Azure Startup Script
+  set_fact:
+    azure_startup: {"commandToExecute": "Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1') | powershell -command -"}
+  when: os | search("windows")
