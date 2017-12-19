@@ -6,7 +6,7 @@
 
     # Variables used by all clouds
     cloud: AWS
-    region: us-west-2
+    region: us-east-2
     size: small # size will determine image and instance_type, which is cloud specific
     duration: 3600 # One hour
     count: 1 # number of VMs

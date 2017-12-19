@@ -2,7 +2,7 @@
 # for AWS Runs
 # Only runs on CENT for now
 
- name: Initialize Blank AWS Startup Script
+- name: Initialize Blank AWS Startup Script
   set_fact:
     aws_startup: ""
 
