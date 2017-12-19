@@ -42,4 +42,4 @@
     - name: Check responce codes
       fail:
         mag: "Not all requests recieved 200 responces"
-      when: passed is not defined
+      when: hostvars['{{benchmark}}'].passed is not defined
