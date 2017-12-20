@@ -86,6 +86,8 @@
 
     - name: prep Windows for Ansible
       include_tasks: "{{playbook_dir}}/include/windows/prep_win.yml"
+      when: os | regex_search("windows")
+
 
 # Run Benchmark
 - import_playbook: benchmark_runner.yml
