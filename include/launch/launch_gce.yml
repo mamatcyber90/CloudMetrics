@@ -17,7 +17,6 @@
     image: "{{gce_image}}"
     state: present
 #    disk_size: 10
-    persistent_boot_disk: true
     num_instances: "{{count}}"
     tags:
       - "{{benchmark}}"
