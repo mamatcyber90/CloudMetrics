@@ -38,8 +38,12 @@
       failed_when: (clean_azure.stderr | regex_search("(?i)fail")) or
                    (clean_azure.stderr | regex_search("(?i)error"))
 
-      # Passed variable is set during every benchmark
-    - name: Check responce codes
-      fail:
-        mag: "Not all requests recieved 200 responces"
-      when: hostvars['{{benchmark}}'].passed is not defined
+#    - name: Set passed vars
+#      set_fact:
+#        passed: hostvars['{{benchmark}}']
+#
+#      # Passed variable is set during every benchmark
+#    - name: Check responce codes
+#      fail:
+#        mag: "Not all requests recieved 200 responces"
+#      when: passed != "200"
