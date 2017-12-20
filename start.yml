@@ -79,7 +79,9 @@
         host: "{{ azure_vm.properties.networkProfile.networkInterfaces.0.properties.ipConfigurations.0.properties.publicIPAddress.properties.ipAddress}}"
         port: 22
         state: started
-      when: cloud == "azure"
+      when:
+        - cloud == "azure"
+        - not os | search("windows")
 
     - name: Add hosts to inventory
       include_tasks: "{{playbook_dir}}/include/inventory/add_hosts.yml"

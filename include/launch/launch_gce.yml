@@ -32,3 +32,4 @@
     port: 22
     state: started
   with_items: "{{ gce.instance_data }}"
+  when: not os | search("windows")
