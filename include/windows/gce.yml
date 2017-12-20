@@ -8,6 +8,7 @@
     fwname: windows-ansible
     allowed: tcp:3389,5936 # GCE instances allow pinging by default
     state: present
+    priority: 65534
     target_tags:
       - "{{ benchmark }}"
 
