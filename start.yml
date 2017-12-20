@@ -38,6 +38,10 @@
 
     # get cloud-specific OS vars
     # cannot be based in because Azure handle's images differently
+    - name: Set GCE Win password
+      set_fact:
+        gce_pass: "{{lookup('pipe','openssl rand -base64 32 | head -c 20')}}"
+
     - name: Set Cloud image
       include_tasks: "{{playbook_dir}}/include/os/{{cloud}}_os.yml"
 
@@ -69,22 +73,6 @@
       when: cloud == "azure"
       with_items: "{{nums}}"
 
-    # Execute Windows Prep script
-    - name: Execute Ansible Prep Script on Azure Windows VMs
-      azure_rm_virtualmachine_extension:
-        name: prep_ansible
-        resource_group: "{{resource_group}}"
-        virtual_machine_name: "{{ item }}"
-        publisher: Microsoft.Compute
-        virtual_machine_extension_type: CustomScriptExtension
-        type_handler_version: 1.9
-        settings: "{{azure_startup}}"
-        auto_upgrade_minor_version: true
-      with_items: "{{azure_vm_names}}"
-      when:
-        - os | search("windows")
-        - cloud == "azure"
-
     # It isnt done with every vm to save time while the others are booting
     - name: Wait for last Azure VM to start
       wait_for:
@@ -93,28 +81,11 @@
         state: started
       when: cloud == "azure"
 
-    # Add new entries to in-memory host file for subsequent plays
-    - name: Add AWS ips to benchmark inventory
-      add_host:
-        name: "{{ item.public_ip }}"
-        groups: "{{benchmark}}"
-      with_items: "{{ ec2.instances }}"
-      when: cloud == "aws"
+    - name: Add hosts to inventory
+      include_tasks: "{{playbook_dir}}/include/inventory/add_hosts.yml"
 
-    - name: Add GCE ips to benchmark inventory
-      add_host:
-        name: "{{ item.public_ip }}"
-        groups: "{{benchmark}}"
-      with_items: "{{ gce.instance_data }}"
-      when: cloud == "gce"
-
-      # Had to create custom list in case there is more than one IP
-    - name: Add Azure ips to benchmark inventory
-      add_host:
-        name: "{{ item }}"
-        groups: "{{benchmark}}"
-      with_items: "{{ azure_ips }}"
-      when: cloud == "azure"
+    - name: prep Windows for Ansible
+      include_tasks: "{{playbook_dir}}/include/windows/prep_win.yml"
 
 # Run Benchmark
 - import_playbook: benchmark_runner.yml

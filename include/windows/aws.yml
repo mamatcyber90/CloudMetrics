@@ -1,0 +1,47 @@
+---
+
+# Prep AWS Instances for Windows launch
+
+- name: Ensure windows security group exists in AWS
+  local_action:
+    module: ec2_group
+    name: windows-ansible
+    description: Rules necessary to provision windows instances with Ansible
+    purge_rules: false
+    purge_rules_egress: false
+    rules:
+      - proto: tcp
+        from_port: 3389
+        to_port: 3389
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 5986
+        to_port: 5986
+        cidr_ip: 0.0.0.0/0
+    state: present
+  register: sec_id
+
+# https://github.com/ansible/ansible/issues/29762
+# They are working on adding it to a running instances
+
+- name: Open Windows ports on AWS
+  shell: aws ec2 modify-instance-attribute --region {{region}} --instance-id {{item.id}} --groups {{sec_id.group_id}}
+  with_items: "{{hostvars['localhost'].ec2.instances}}"
+
+# only works with one instance for now
+- name: Get AWS Win EC2 Password
+  ec2_win_password:
+    instance_id: "{{item}}"
+    wait: yes
+    wait_timeout: 240
+  register: aws_win_pass
+  with_items: "{{ec2.instance_ids}}"
+  when: cloud == "aws"
+
+- name: Register after generating AWS pass
+  set_fact:
+    win_pass: "{{aws_win_pass.win_password}}"
+
+- name: Set Windows user on AWS
+  set_fact:
+    win_user: Administrator

@@ -20,7 +20,10 @@
     num_instances: "{{count}}"
     tags:
       - "{{benchmark}}"
-    metadata: { "startup-script" : "{{gce_startup}}" }
+    metadata: |
+      { "startup-script" : "{{gce_startup}}",
+        "windows-startup-script-ps1" : "{{gce_startup}}",
+        "windows-startup-script-cmd" : 'net user "{{ssh_user}}" "{{win_pass}}"' }
   register: gce
 
 - name: Wait for SSH

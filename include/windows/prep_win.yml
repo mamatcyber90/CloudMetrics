@@ -1,0 +1,15 @@
+---
+
+# Prep instances to use Ansible on Windows
+
+- name: prep AWS
+  include_tasks: "{{playbook_dir}}/include/windows/aws.yml"
+  when: cloud == "aws"
+
+- name: prep GCE
+  include_tasks: "{{playbook_dir}}/include/windows/gce.yml"
+  when: cloud == "gce"
+
+- name: prep Azure
+  include_tasks: "{{playbook_dir}}/include/windows/azure.yml"
+  when: cloud == "azure"

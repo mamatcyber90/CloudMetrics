@@ -1,0 +1,24 @@
+---
+
+# Add new entries to in-memory host file for subsequent plays
+- name: Add AWS ips to benchmark inventory
+  add_host:
+    name: "{{ item.public_ip }}"
+    groups: "{{benchmark}}"
+  with_items: "{{ ec2.instances }}"
+  when: cloud == "aws"
+
+- name: Add GCE ips to benchmark inventory
+  add_host:
+    name: "{{ item.public_ip }}"
+    groups: "{{benchmark}}"
+  with_items: "{{ gce.instance_data }}"
+  when: cloud == "gce"
+
+  # Had to create custom list in case there is more than one IP
+- name: Add Azure ips to benchmark inventory
+  add_host:
+    name: "{{ item }}"
+    groups: "{{benchmark}}"
+  with_items: "{{ azure_ips }}"
+  when: cloud == "azure"

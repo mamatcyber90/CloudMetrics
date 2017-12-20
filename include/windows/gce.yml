@@ -1,0 +1,16 @@
+---
+
+# prep gce instance for ansible
+
+- name: Ensure Windows security group exists in GCE
+  gce_net:
+    name: default # network name
+    fwname: windows-ansible
+    allowed: tcp:3389,5936 # GCE instances allow pinging by default
+    state: present
+    target_tags:
+      - "{{ benchmark }}"
+
+- name: set Windows User on GCE
+  set_fact:
+    win_user: "{{ssh_user}}"

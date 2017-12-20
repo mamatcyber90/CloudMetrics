@@ -4,31 +4,15 @@
   # Gets these variables from the localhost group
 
   vars:
-    ansible_ssh_user: "{{ ssh_user }}"
-    ansible_ssh_private_key_file: "{{ssh_key_dir}}"
+    ansible_user: "{{hostvars['localhost'].win_user}}"
+    ansible_password: "{{hostvars['localhost'].win_pass}}"
+    ansible_connection: winrm
+    ansible_port: 5986
+    ansible_winrm_server_cert_validation: ignore
+
 
   tasks:
 
-    # Ensure a job that runs at 2 and 5 exists.
-# Creates an entry like "0 5,2 * * ls -alh > /dev/null"
-    - Name: Create auto-shutdown chron job
-      cron:
-        name: "Shutdown on the hour"
-        minute: "0"
-        job: "sudo shutdown -h now"
-      when: os != "windows"
-
-    - name: Run High Performance Linpack (HPL)
-      include_tasks: "{{playbook_dir}}/benchmarks/HPL/hpl.yml"
-      ignore_errors: yes
-      when: benchmark == "hpl"
-
-    - name: Run Disk Benchmarker (Fio)
-      include_tasks: "{{playbook_dir}}/benchmarks/fio/fio.yml"
-      ignore_errors: yes
-      when: benchmark == "fio"
-
-    - name: Run Network Bandwith Tester (iperf3)
-      include_tasks: "{{playbook_dir}}/benchmarks/iperf3/iperf.yml"
-      ignore_errors: yes
-      when: benchmark == "iperf3"
+    - Name: testing debug
+      debug:
+        msg: It works!
