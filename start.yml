@@ -89,6 +89,10 @@
 
 # Run Benchmark
 - import_playbook: benchmark_runner.yml
+  when: not os | regex_search("windows")
+
+- import_playbook: benchmark_runner_win.yml
+  when: os | regex_search("windows")
 
 # terminate the instances
 - import_playbook: terminate.yml
