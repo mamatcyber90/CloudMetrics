@@ -21,10 +21,7 @@
     location: "{{region}}"
     vm_size: "{{instance_type}}"
     admin_username: "{{ssh_user}}"
-    data_disks:
-      - lun: 0
-        disk_size_gb: 50
-        managed_disk_type: Premium_LRS
+    managed_disk_type: Premium_LRS
     ssh_public_keys:
       - path: /home/{{ssh_user}}/.ssh/authorized_keys
         key_data: "{{ssh_public_key.stdout}}"
@@ -45,10 +42,7 @@
     vm_size: "{{instance_type}}"
     admin_username: "{{ssh_user}}"
     admin_password: "{{win_pass}}"
-    data_disks:
-        - lun: 0
-          disk_size_gb: 50
-          managed_disk_type: Premium_LRS
+    managed_disk_type: Premium_LRS
     image:
       offer: "{{azure_image}}"
       publisher: "{{azure_publisher}}"
