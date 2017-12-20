@@ -5,6 +5,9 @@
 # Don't need to initialize Azure Startup because it is only used after the instance is provisioned
 
 # Images must be from the Azure Marketplace
+# use az vm image list --location "East US" --publisher ... to narrow results
+
+# East US images
 - name: Set CentOS-7 image
   set_fact:
     azure_image: CentOS # default centos7
@@ -12,6 +15,14 @@
     azure_sku: '7.1'
     azure_version: latest
   when: os == "centos7"
+
+- name: Set Windows image
+  set_fact:
+    azure_image: WindowsServer # default centos7
+    azure_publisher: MicrosoftWindowsServer
+    azure_sku: 2016-Datacenter-Server-Core-smalldisk
+    azure_version: latest
+  when: os == "windows"
 
 - name: Set Azure Startup Script
   set_fact:

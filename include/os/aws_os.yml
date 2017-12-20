@@ -20,6 +20,12 @@
     - os == "centos7"
     - region | search("us-east-2")
 
+- name: Set Windows US-EAST-2 image
+  set_fact:
+    aws_image: ami-c65871a3
+  when:
+    - os | search('windows')
+    - region | search("us-east-2")
 
 - name: Set AWS Startup Script
   set_fact:
