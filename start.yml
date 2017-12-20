@@ -40,7 +40,7 @@
     # cannot be based in because Azure handle's images differently
     - name: Set GCE Win password
       set_fact:
-        gce_pass: "{{lookup('pipe','openssl rand -base64 32 | head -c 20')}}"
+        win_pass: "{{lookup('pipe','openssl rand -base64 32 | head -c 20')}}"
 
     - name: Set Cloud image
       include_tasks: "{{playbook_dir}}/include/os/{{cloud}}_os.yml"
