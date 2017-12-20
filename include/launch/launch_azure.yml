@@ -32,24 +32,6 @@
       sku: "{{azure_sku}}"
       version: "{{azure_version}}"
   register: azure_vm
-  when: not os | regex_search('windows')
-
-- name: Launch Windows Azure Instance
-  azure_rm_virtualmachine:
-    resource_group: "{{resource_group}}"
-    name: "{{azure_vm_name}}"
-    location: "{{region}}"
-    vm_size: "{{instance_type}}"
-    admin_username: "{{ssh_user}}"
-    admin_password: "{{win_pass}}"
-    managed_disk_type: Premium_LRS
-    image:
-      offer: "{{azure_image}}"
-      publisher: "{{azure_publisher}}"
-      sku: "{{azure_sku}}"
-      version: "{{azure_version}}"
-  register: azure_vm
-  when: os | regex_search('windows')
 
 ## Adding IPs to IP list ##
 
