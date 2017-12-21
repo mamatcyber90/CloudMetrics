@@ -29,7 +29,7 @@
   with_items: "{{hostvars['localhost'].ec2.instances}}"
 
 # empty AWS win password list
-- name: Create blank aws password list
+- name: Create blank password list
   set_fact:
     admin_passwords: []
 
