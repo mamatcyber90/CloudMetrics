@@ -12,9 +12,12 @@
     target_tags:
       - "{{ benchmark }}"
 
-- name: set Windows User on GCE
+- name: Create blank password list
   set_fact:
-    win_user: "{{ssh_user}}"
+    admin_passwords: []
 
-- name: Set Get windows password
-  shell: gcloud beta compute reset-windows-password {{item}} --user={{ssh_user}}
+- name: reset GCE Win Passwords
+  include_tasks: "{{playbook_dir}}/include/windows/get_gce_passes.yml"
+  with_items: "{{gce.instance_data}}"
+
+

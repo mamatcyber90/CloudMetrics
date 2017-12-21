@@ -22,8 +22,7 @@
       - "{{benchmark}}"
     metadata: |
       { "startup-script" : "{{gce_startup}}",
-        "windows-startup-script-ps1" : "{{gce_startup}}",
-        "windows-startup-script-cmd" : "net user '{{ssh_user}}' '{{win_pass}}'" }
+        "windows-startup-script-ps1" : "{{gce_startup}}" }
   register: gce
 
 - name: Wait for SSH

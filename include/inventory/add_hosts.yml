@@ -14,9 +14,13 @@
 
 - name: Add GCE ips to benchmark inventory
   add_host:
-    name: "{{ item.public_ip }}"
+    name: "{{ item.0.public_ip }}"
+    ansible_user: winUser
+    ansible_password: "{{iten.1}}"
     groups: "{{benchmark}}"
-  with_items: "{{ gce.instance_data }}"
+  with_items:
+    - "{{ gce.instance_data }}"
+    - "{{admin_passwords}}"
   when: cloud == "gce"
 
   # Had to create custom list in case there is more than one IP

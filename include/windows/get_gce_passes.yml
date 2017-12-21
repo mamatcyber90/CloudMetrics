@@ -1,0 +1,9 @@
+---
+
+- name: Set Get windows password
+  shell: gcloud beta compute reset-windows-password {{item.name}} --zone={{region}} --user=winUser
+  register: gce_win_pass
+
+- name: Add password to list
+  set_fact:
+    admin_passwords: "{{admin_passwords}} + [ '{{gce_win_pass.stdout}}' ]"
