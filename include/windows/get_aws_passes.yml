@@ -4,6 +4,7 @@
 - name: Get AWS Win EC2 Password
   ec2_win_password:
     instance_id: "{{item}}"
+    keyfile: ~/thomas_east
     wait: yes
     wait_timeout: 240
   register: aws_win_pass
