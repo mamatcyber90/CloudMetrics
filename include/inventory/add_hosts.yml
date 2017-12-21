@@ -4,8 +4,12 @@
 - name: Add AWS ips to benchmark inventory
   add_host:
     name: "{{ item.public_ip }}"
+    ansible_user: Administrator  # AWS Windows user is always the Administrator
+    ansible_password: "{{item.1}}"
     groups: "{{benchmark}}"
-  with_items: "{{ ec2.instances }}"
+  with_items:
+    - "{{ ec2.instances }}"
+    - "{{ admin_passwords }}"
   when: cloud == "aws"
 
 - name: Add GCE ips to benchmark inventory

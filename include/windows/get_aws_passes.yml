@@ -4,7 +4,7 @@
 - name: Get AWS Win EC2 Password
   ec2_win_password:
     instance_id: "{{item}}"
-    key_file: ~/thomas_east
+    key_file: "{{ssh_key_dir}}"
     region: "{{region}}"
     wait: yes
     wait_timeout: 240
