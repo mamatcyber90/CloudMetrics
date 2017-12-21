@@ -5,6 +5,7 @@
   ec2_win_password:
     instance_id: "{{item}}"
     key_file: ~/thomas_east
+    region: "{{region}}"
     wait: yes
     wait_timeout: 240
   register: aws_win_pass
