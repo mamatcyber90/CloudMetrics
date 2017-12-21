@@ -83,13 +83,12 @@
         - cloud == "azure"
         - not os | search("windows")
 
-    - name: Add hosts to inventory
-      include_tasks: "{{playbook_dir}}/include/inventory/add_hosts.yml"
-
     - name: prep Windows for Ansible
       include_tasks: "{{playbook_dir}}/include/windows/prep_win.yml"
       when: os | regex_search("windows")
 
+    - name: Add hosts to inventory
+      include_tasks: "{{playbook_dir}}/include/inventory/add_hosts.yml"
 
 # Run Benchmark
 - import_playbook: benchmark_runner.yml
