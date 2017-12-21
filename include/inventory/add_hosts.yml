@@ -20,7 +20,7 @@
     groups: "{{benchmark}}"
   with_items:
     - "{{ gce.instance_data }}"
-    - "{{admin_passwords}}"
+    - "{{ admin_passwords }}"
   when: cloud == "gce"
 
   # Had to create custom list in case there is more than one IP
