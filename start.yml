@@ -15,7 +15,7 @@
     key: my_key
 
     # Azure Specific vars
-    azure_sub_id: 123-a23-32
+    azure_sub_id: 123-a23-32 #hello world
 
 
     # Metadata for the parser
