@@ -15,3 +15,6 @@
 - name: set Windows User on GCE
   set_fact:
     win_user: "{{ssh_user}}"
+
+- name: Set Get windows password
+  shell: gcloud beta compute reset-windows-password {{item}} --user={{ssh_user}}

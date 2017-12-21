@@ -1,0 +1,14 @@
+---
+
+# only works with one instance for now
+- name: Get AWS Win EC2 Password
+  ec2_win_password:
+    instance_id: "{{item}}"
+    wait: yes
+    wait_timeout: 240
+  register: aws_win_pass
+  when: cloud == "aws"
+
+- name: Add password to AWS password list
+  set_fact:
+    admin_passwords: "{{admin_passwords}} + [ '{{aws_win_pass.win_password}}' ]"

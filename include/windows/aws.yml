@@ -28,20 +28,12 @@
   shell: aws ec2 modify-instance-attribute --region {{region}} --instance-id {{item.id}} --groups {{sec_id.group_id}}
   with_items: "{{hostvars['localhost'].ec2.instances}}"
 
-# only works with one instance for now
-- name: Get AWS Win EC2 Password
-  ec2_win_password:
-    instance_id: "{{item}}"
-    wait: yes
-    wait_timeout: 240
-  register: aws_win_pass
+# empty AWS win password list
+- name: Create blank aws password list
+  set_fact:
+    admin_passwords: []
+
+# Get passwords
+- name: Get aws win passwords
+  include_tasks: "{{playbook_dir}}/include/windows/get_aws_passes.yml"
   with_items: "{{ec2.instance_ids}}"
-  when: cloud == "aws"
-
-- name: Register after generating AWS pass
-  set_fact:
-    win_pass: "{{aws_win_pass.win_password}}"
-
-- name: Set Windows user on AWS
-  set_fact:
-    win_user: Administrator

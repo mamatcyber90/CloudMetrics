@@ -4,8 +4,7 @@
   # Gets these variables from the localhost group
 
   vars:
-    ansible_user: "{{hostvars['localhost'].win_user}}"
-    ansible_password: "{{hostvars['localhost'].win_pass}}"
+    # User and password are set individually by the host
     ansible_connection: winrm
     ansible_port: 5986
     ansible_winrm_server_cert_validation: ignore
