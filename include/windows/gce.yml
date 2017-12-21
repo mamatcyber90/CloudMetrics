@@ -15,9 +15,6 @@
   set_fact:
     admin_passwords: []
 
-- pause:
-    minutes: 2
-
 - name: reset GCE Win Passwords
   include_tasks: "{{playbook_dir}}/include/windows/get_gce_passes.yml"
   with_items: "{{gce.instance_data}}"
