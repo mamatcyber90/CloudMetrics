@@ -21,6 +21,7 @@
     tags:
       - "{{benchmark}}"
       - "ansible"
+      - "{{os}}"
     metadata: |
       { "startup-script" : "{{gce_startup}}",
         "windows-startup-script-ps1" : "{{gce_startup}}" }

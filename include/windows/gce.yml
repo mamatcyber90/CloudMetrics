@@ -9,7 +9,6 @@
     allowed: tcp:5986 # GCE instances allow pinging by default
     state: present
     target_tags:
-      - "{{ benchmark }}"
       - "ansible"
 
 - name: Create blank password list
