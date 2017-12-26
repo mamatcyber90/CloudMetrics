@@ -11,13 +11,13 @@
        protocol: Tcp
        destination_port_range: 5986
        access: Allow
-       priority: 100
+       priority: 4000
        direction: Inbound
      - name: RPM
        protocol: Tcp
        destination_port_range: 3389
        access: Allow
-       priority: 100
+       priority: 3999
        direction: Inbound
        
 # Execute Windows Prep script
