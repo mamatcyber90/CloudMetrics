@@ -27,6 +27,8 @@
 - name: Add Azure ips to benchmark inventory
   add_host:
     name: "{{ item }}"
+    ansible_user: "{{ssh_user}}"
+    ansible_password: "{{ssh_pass}}"
     groups: "{{benchmark}}"
   with_items: "{{ azure_ips }}"
   when: cloud == "azure"
