@@ -27,9 +27,9 @@
       - network_interfaces
       - virtual_storage
       - public_ips
-    ssh_public_keys:
-      - path: /home/{{ssh_user}}/.ssh/authorized_keys
-        key_data: "{{ssh_public_key.stdout}}"
+#    ssh_public_keys:
+#      - path: /home/{{ssh_user}}/.ssh/authorized_keys
+#        key_data: "{{ssh_public_key.stdout}}"
     ssh_password_enabled: false
     image:
       offer: "{{azure_image}}"

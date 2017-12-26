@@ -18,7 +18,7 @@
 
 - name: Set Windows image
   set_fact:
-    azure_image: WindowsServer # default centos7
+    azure_image: WindowsServer
     azure_publisher: MicrosoftWindowsServer
     azure_sku: 2016-Datacenter-Server-Core-smalldisk
     azure_version: latest
