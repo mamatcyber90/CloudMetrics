@@ -20,6 +20,7 @@
     num_instances: "{{count}}"
     tags:
       - "{{benchmark}}"
+      - "ansible"
     metadata: |
       { "startup-script" : "{{gce_startup}}",
         "windows-startup-script-ps1" : "{{gce_startup}}" }
