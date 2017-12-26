@@ -8,13 +8,13 @@
    name: windows-ansible
    rules:
      - name: WinRM-HTTPS
-       protocol: TCP
+       protocol: Tcp
        destination_port_range: 5986
        access: Allow
        priority: 100
        direction: Inbound
      - name: RPM
-       protocol: TCP
+       protocol: Tcp
        destination_port_range: 3389
        access: Allow
        priority: 100
