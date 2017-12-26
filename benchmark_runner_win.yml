@@ -1,5 +1,7 @@
 - name: Run benchmark
   hosts: "{{benchmark}}"
+  gather_facts: false
+
 
   # Gets these variables from the localhost group
 
@@ -12,6 +14,13 @@
 
   tasks:
 
-    - Name: testing debug
+    - name: Wait for connection to be come available
+      wait_for_connection:
+        timeout: 120 # two minutes
+    
+    - name: Gather facts about VM
+      setup:
+
+    - name: testing debug
       debug:
         msg: It works!
