@@ -3,7 +3,7 @@
 
 - name: Set temp Azure VM name
   set_fact:
-    azure_vm_name: "{{size}}-{{benchmark}}-{{lookup('pipe','date +%s')}}"
+    azure_vm_name: "{{size[0]}}-{{benchmark[0]}}-{{lookup('pipe','date +%s')[-4:0]}}"
 
 - name: Create Resource Group for current batch
   include_tasks: "{{playbook_dir}}/include/launch/azure_resource_group.yml"
