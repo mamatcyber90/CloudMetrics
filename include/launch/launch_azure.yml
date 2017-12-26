@@ -21,6 +21,7 @@
     location: "{{region}}"
     vm_size: "{{instance_type}}"
     admin_username: "{{ssh_user}}"
+    admin_password: "{{ssh_pass}}"
     managed_disk_type: Premium_LRS
     remove_on_absent:
       - network_interfaces
