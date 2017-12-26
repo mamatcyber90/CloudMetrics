@@ -5,10 +5,6 @@
   set_fact:
     azure_vm_name: "{{size}}-{{benchmark}}-{{lookup('pipe','uuidgen | cut -d "-" -f 2')}}"
 
-- name: trim vm name
-  set_fact: 
-    azure_vm_name: "{{azure_vm_name[-14:]}}"
-
 - name: Create Resource Group for current batch
   include_tasks: "{{playbook_dir}}/include/launch/azure_resource_group.yml"
   when: resource_group is not defined
