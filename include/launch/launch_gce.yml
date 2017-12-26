@@ -24,7 +24,8 @@
       - "{{os}}"
     metadata: |
       { "startup-script" : "{{gce_startup}}",
-        "windows-startup-script-ps1" : "{{gce_startup}}" }
+        "windows-startup-script-ps1" : "{{gce_startup}}" 
+        "sysprep-specialize-script-ps1" : "{{gce_startup}}" }
   register: gce
 
 - name: Wait for SSH
