@@ -13,7 +13,7 @@
        access: Allow
        priority: 4000
        direction: Inbound
-     - name: RPM
+     - name: RDP
        protocol: Tcp
        destination_port_range: 3389
        access: Allow

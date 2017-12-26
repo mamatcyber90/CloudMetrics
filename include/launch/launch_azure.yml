@@ -3,7 +3,7 @@
 
 - name: Set temp Azure VM name
   set_fact:
-    azure_vm_name: "{{size}}-{{benchmark}}-{{lookup('pipe','date +%s')}}"
+    azure_vm_name: "{{size}}-{{benchmark}}-{{lookup('pipe','uuidgen | cut -d "-" -f 2')}}"
 
 - name: trim vm name
   set_fact: 
@@ -18,30 +18,13 @@
     resource_group: "{{azure_vm_name}}"
   when: resource_group is not defined
 
-- name: Launch Linux Azure Instance
-  azure_rm_virtualmachine:
-    resource_group: "{{resource_group}}"
-    os_type: Windows
-    name: "{{azure_vm_name}}"
-    location: "{{region}}"
-    vm_size: "{{instance_type}}"
-    admin_username: "{{ssh_user}}"
-    admin_password: "{{ssh_pass}}"
-    managed_disk_type: Premium_LRS
-    remove_on_absent:
-      - network_interfaces
-      - virtual_storage
-      - public_ips
-#    ssh_public_keys:
-#      - path: /home/{{ssh_user}}/.ssh/authorized_keys
-#        key_data: "{{ssh_public_key.stdout}}"
-#    ssh_password_enabled: false
-    image:
-      offer: "{{azure_image}}"
-      publisher: "{{azure_publisher}}"
-      sku: "{{azure_sku}}"
-      version: "{{azure_version}}"
-  register: azure_vm
+- name: Launch Linux
+  include_tasks: "{{playbook_dir}}/include/launch/azure_linux.yml"
+  when: not os | search("windows")
+
+- name: Launch Windows
+  include_tasks: "{{playbook_dir}}/include/launch/azure_win.yml"
+  when: os | search("windows")
 
 ## Adding IPs to IP list ##
 
