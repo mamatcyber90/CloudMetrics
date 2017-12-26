@@ -1,5 +1,9 @@
 ---
 
+- name: Echo admin_passwords
+  debug:
+    var: admin_passwords
+
 # Add new entries to in-memory host file for subsequent plays
 - name: Add AWS ips to benchmark inventory
   add_host:
@@ -11,10 +15,6 @@
     - "{{ ec2.instances }}"
     - "{{ admin_passwords }}"
   when: cloud == "aws"
-
-- name: Echo admin_passwords
-  debug:
-    var: admin_passwords
 
 - name: Add GCE ips to benchmark inventory
   add_host:
