@@ -6,7 +6,7 @@
   gce_net:
     name: default # network name
     fwname: windows-ansible
-    allowed: tcp:3389,5936 # GCE instances allow pinging by default
+    allowed: tcp:3389,5986 # GCE instances allow pinging by default
     state: present
     target_tags:
       - "{{ benchmark }}"
