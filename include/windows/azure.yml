@@ -35,6 +35,7 @@
   when:
     - os | search("windows")
     - cloud == "azure"
+  ignore_errors: true
 
 - name: set Windows User on Azure
   set_fact:
